@@ -37,6 +37,7 @@ int main()
     printm(tablou, n, m);
     //elibereaza memoria matricii
     killmatrix(tablou, n);
+    getchar();
     return 0;
 }
 void meniu(int *n, int *m)
@@ -143,7 +144,6 @@ int randm(int **tablou, int n, int m)
     }
     for (int i = 0; i < n; i++)
     {
-        printf("\n");
         for (int j = 0; j < m; j++)
         {
             tablou[i][j] = (rand() % (max - min + 1)) + min;
