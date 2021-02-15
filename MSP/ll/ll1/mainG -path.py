@@ -254,9 +254,10 @@ def printM(matrix, n, m, o):
 
 
 def pathMatrix(matrix, n):
-    pMatrix = np.resize(matrix, (n, n+1))
+    pMatrix = np.zeros([n, n+1])
     for i in range(0, n):
-        pMatrix[i][n] = 0
+        for j in range(0, n):
+            pMatrix[i][j] = matrix[i][j]
     for i in range(0, n):
         for j in range(0, n):
             if matrix[i][j] == 1:
@@ -272,13 +273,6 @@ def pathMatrix(matrix, n):
     printM(matrix, n, n, 1)
     # drumuri
     printM(pMatrix, n, n, 2)
-    p = 0
-    for i in range(0, n):
-        p += pMatrix[i][n]
-    print("suma puterilor de atingere a varfurilor este", int(p), end='')
-    f = n*(n-1)/2
-    f = int(f)
-    print(" dar ar trebui sa fie", f)
     return
 
 
