@@ -1,0 +1,1 @@
+gcc -o conditii.exe conditii.c

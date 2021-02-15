@@ -1,0 +1,1 @@
+conditii.exe
