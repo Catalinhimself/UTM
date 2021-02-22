@@ -310,7 +310,7 @@ class GRAF:
                 self.edit()
             elif o == "9":
                 self.graf = defaultdict(list)
-                for i in range(0, random.randint(15, 25)):
+                for i in range(0, random.randint(15, 35)):
                     self.adaugaArc(random.randint(1, 7), random.randint(
                         1, 7), random.randint(1, 10))
                 self.curatare()
