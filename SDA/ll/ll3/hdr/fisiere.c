@@ -1,9 +1,9 @@
-const char fisier1[10] = "lab3.in";
-const char fisier2[10] = "lab3.out";
+const char fisier1[10] = "lab3_in";
+const char fisier2[10] = "lab3_out";
 void sciereaInFisier(int n1, int n2, int m1, int m2, int **M1, int **M2)
 {
     FILE *fisier = NULL;
-    fisier = fopen(fisier1, "wb");
+    fisier = fopen(fisier1, "w");
     if (!fisier)
     {
         printf("nu s-a putut deschde acest fisier\n");
@@ -32,7 +32,7 @@ void sciereaInFisier(int n1, int n2, int m1, int m2, int **M1, int **M2)
 void dimensiunileMatricilor(int *n1, int *m1, int *n2, int *m2)
 {
     FILE *fisier = NULL;
-    fisier = fopen(fisier1, "rb");
+    fisier = fopen(fisier1, "r");
     if (!fisier)
     {
         printf("in memorie nu exista nici un fisier\n");
@@ -55,7 +55,7 @@ void citireaMatricilor(int **M1, int **M2)
 {
     int n, m;
     FILE *fisier = NULL;
-    fisier = fopen(fisier1, "rb");
+    fisier = fopen(fisier1, "r");
     if (!fisier)
     {
         printf("nu exista acest fisier\n");
@@ -76,7 +76,7 @@ void citireaMatricilor(int **M1, int **M2)
 void scriereProdus(int n, int a, int b, int m, int **M)
 {
     FILE *fisier = NULL;
-    fisier = fopen(fisier2, "wb");
+    fisier = fopen(fisier2, "w");
     if (!fisier)
     {
         printf("nu s-a putut deschde acest fisier\n");

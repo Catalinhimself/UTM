@@ -178,21 +178,19 @@ class GRAF:
         lista.append([start])
         # for v in self.graf[start]:
         #     lista.append([v[0]])
-        i = 0
         listePosibile = []
-        while True:
+        while lista:
             for l in lista:
                 for v in self.graf[l[len(l)-1]]:
                     lista2.append(l+[v[0]])
             lista = lista2
+            # print(lista)
             for l in lista:
                 if (l[0] == start and l[len(l)-1] == finis):
                     listePosibile.append(l)
             lista2 = []
-            i += 1
-            if i == 10:
-                break
         listeValide = []
+        # print(listePosibile)
         for l in listePosibile:
             suma = 0
             pref = start
@@ -213,6 +211,7 @@ class GRAF:
                     print(" =("+str(weight[0][1]) + ")=>", end=" ")
                 pref = v
             print(pref)
+        # print(listeValide)
 
     def deseneazaGraful(self):
         g = nx.DiGraph()
