@@ -59,6 +59,9 @@ int main()
             printf("nu poate fi calculat produsul\n");
 
         scriereProdus(n1, n2, m1, m2, M);
+        freeMatrice(M, n1);
+        freeMatrice(M1, n1);
+        freeMatrice(M2, n2);
     }
 
     return 0;

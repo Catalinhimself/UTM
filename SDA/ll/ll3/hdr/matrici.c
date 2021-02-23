@@ -31,9 +31,9 @@ int **multiplicareaMatricilor(int n, int m, int p, int **M1, int **M2)
 }
 int **citireaMatrice(int *n, int *m)
 {
-    printf("dari nr. de randuri ");
+    printf("dati nr. de randuri ");
     scanf("%d", n);
-    printf("dari nr. de coloane ");
+    printf("dati nr. de coloane ");
     scanf("%d", m);
     int **M = creareMatrice(*n, *m);
     for (int i = 0; i < *n; i++)
@@ -43,4 +43,11 @@ int **citireaMatrice(int *n, int *m)
             scanf("%d", &M[i][j]);
         }
     return M;
+}
+void freeMatrice(int **matrice, int n)
+{
+    for (int i = 0; i < n; i++)
+        free(matrice[i]);
+    free(matrice);
+    matrice = NULL;
 }

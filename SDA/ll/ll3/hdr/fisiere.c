@@ -1,5 +1,5 @@
-const char fisier1[10] = "lab3_in";
-const char fisier2[10] = "lab3_out";
+const char fisier1[20] = "lab3_in.txt";
+const char fisier2[20] = "lab3_out.txt";
 void sciereaInFisier(int n1, int n2, int m1, int m2, int **M1, int **M2)
 {
     FILE *fisier = NULL;
