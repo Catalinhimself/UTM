@@ -122,7 +122,7 @@ class GRAF:
                             "Hj - Hi = L ij", "Distanta", "Eticheta"]
         H = defaultdict(int)
         for k in [*self.graf]:
-            H[k] = -math.inf
+            H[k] = math.inf
         for k in [*self.graf]:
             H[k] = 0
             break
@@ -136,7 +136,7 @@ class GRAF:
                 rs = str(H[v[0]]-H[k])
                 line.append(eq + eqn + rs + str((" < ", " > ")
                                                 [H[v[0]]-H[k] > v[1]])+str(v[1]))
-                if H[v[0]] - H[k] < v[1]:
+                if H[v[0]] - H[k] > v[1]:
                     distanta = str(H[k])+"+"+str(v[1])
                     eticheta = "H"+str(v[0])+" = " + str(H[k]+v[1])
                 else:
@@ -144,18 +144,17 @@ class GRAF:
                     eticheta = "neschimbata"
                 line.append(distanta)
                 line.append(eticheta)
-                if H[v[0]]-H[k] < v[1]:
+                if H[v[0]]-H[k] > v[1]:
                     H[v[0]] = H[k]+v[1]
                 ford.add_row(line)
-        print(ford.get_string(title="Ford drum maxim"))
-        self.drumMaxim = int(H[list(H).pop()])
+        print(ford.get_string(title="Ford drum minim"))
+        self.drumMinim = int(H[list(H).pop()])
         self.determinaFordInput(H)
     def determinaFordInput(self,etichete):
         grafInversat = defaultdict(list)
         for k in [*self.graf]:
             for v in self.graf[k]:
                 grafInversat[v[0]].append((k,v[1]))
-        print(grafInversat)
         start = list(self.graf).pop(0)    
         finish = list(self.graf).pop()
         drumuri = [[finish]]
@@ -169,25 +168,14 @@ class GRAF:
                         drumF.insert(0,f)
                     drumuriValide.append(drumF)
                 for v in grafInversat[drum[len(drum)-1]]:
-                    if etichete[list(etichete).pop()]==self.drumMinim:
-                        if etichete[drum[len(drum)-1]] -v[1] ==etichete[v[0]]:
-                            temp.append(drum+[v[0]])
-                    else:
-                        print(  etichete[drum[len(drum)-1]] ,etichete[v[0]] ,v)
-                        if    etichete[drum[len(drum)-1 ]] - etichete[v[0]]  ==v[1]:
-                            temp.append(drum+[v[0]])
-                            print(v)
+                    if etichete[drum[len(drum)-1]] -v[1] ==etichete[v[0]]:
+                        temp.append(drum+[v[0]])
             if not temp:
                 break
             drumuri=temp
             temp = []
-       
-        if etichete[list(etichete).pop()]==self.drumMinim:
-            self.minListe=drumuriValide
-            self.afiseazaDrumuri("minim")
-        if etichete[list(etichete).pop()]==self.drumMaxim:
-            self.maxListe=drumuriValide
-            self.afiseazaDrumuri("maxim")
+        self.minListe=drumuriValide
+        self.afiseazaDrumuri("minim")
     def determinaBellmanKalabaMinim(self):
         kalaba = PrettyTable()
         kalaba.field_names = [""]+[*self.graf]
@@ -242,62 +230,6 @@ class GRAF:
         print(kalaba.get_string(title="Bellman Kalaba drum minim"))
         self.drumMinim = int(bk[m-1][list(varfuri).pop(0)])
         self.determinaKalabaInput(bk[m-1])
-    
-    def determinaBellmanKalabaMaxim(self):
-        kalaba = PrettyTable()
-        kalaba.field_names = [""]+[*self.graf]
-        n = list(self.graf).pop()+1
-        bk = np.zeros([n, n])
-        for i in range(0, n):
-            for j in range(0, n):
-                bk[i][j] = -1
-        varfuri = sorted(list(self.graf))
-        for i in varfuri:
-            for j in varfuri:
-                bk[i][j] = -math.inf
-                if i == j:
-                    bk[i][j] = 0
-        for k in [*self.graf]:
-            for v in self.graf[k]:
-                bk[k][v[0]] = v[1]
-        m = n+1
-        bk.resize([m, n])
-        for i in range(0, n):
-            bk[m-1][i] = bk[i][n-1]
-
-        while not (bk[m-2] == bk[m-1]).all():
-            m += 1
-            bk.resize([m, n])
-            for i in varfuri:
-                temp = -math.inf
-                for j in varfuri:
-                    if i != j:
-                        if bk[m-2][j]+bk[i][j] > temp:
-                            temp = bk[m-2][j]+bk[i][j]
-                            bk[m-1][i] = temp
-
-        for i in varfuri:
-            lista = [i]
-            for j in varfuri:
-                if math.isinf(bk[i][j]):
-                    lista.append(bk[i][j])
-                else:
-                    lista.append(int(bk[i][j]))
-            kalaba.add_row(lista)
-        for i in range(n, m):
-            lista = []
-            lista.append("V"+str(i-n+1))
-            for j in varfuri:
-                if math.isinf(bk[i][j]):
-                    lista.append(bk[i][j])
-                else:
-                    lista.append(int(bk[i][j]))
-
-            kalaba.add_row(lista)
-        print(kalaba.get_string(title="Bellman Kalaba drum maxim"))
-        self.drumMaxim = int(bk[m-1][list(varfuri).pop(0)])
-        self.determinaKalabaInput(bk[m-1])
-
 
     def determinaKalabaInput(self,rand):
         start = list(self.graf).pop(0)    
@@ -316,12 +248,8 @@ class GRAF:
                 break
             drumuri=temp
             temp = []
-        if rand[start]==self.drumMinim:
-            self.minListe=drumuriValide
-            self.afiseazaDrumuri("minim")
-        if rand[start]==self.drumMaxim:
-            self.maxListe=drumuriValide
-            self.afiseazaDrumuri("maxim")
+        self.minListe=drumuriValide
+        self.afiseazaDrumuri("minim")
     def afiseazaDrumuri(self,drum):
         print("D",drum,"= ", (self.drumMinim,self.drumMaxim)[drum=="maxim"])
         for l in (self.minListe,self.maxListe)[drum=="maxim"]:
@@ -333,8 +261,7 @@ class GRAF:
                     print(" =("+str(weight.pop()[1]) + ")=>", end=" ")
                 pref = v
             print(pref)
-            
-    def determinareaCatalinHimselfDrumuluiMaxim(self):
+    def determinareaCatalinHimselfDrumuluiMinim(self):
         lista = []
         lista2 = []
         start = list(self.graf).pop(0)
@@ -365,9 +292,9 @@ class GRAF:
                     suma += weight.pop()[1]
                 # print("varf", v, "suma", suma, "weight", weight)
                 pref = v
-            if suma == self.drumMaxim:
+            if suma == self.drumMinim:
                 listeValide.append(l)
-        print("D maxim = ", self.drumMaxim)
+        print("D minim = ", self.drumMinim)
         for l in listeValide:
             pref = start
             for v in l:
@@ -443,7 +370,6 @@ class GRAF:
             print("( 4 ) - FORD minim")
             print("( 5 ) - Kalaba minim")
             print("( 6 ) - FORD maxim")
-            print("( 7 ) - Kalaba maxim")
             print("( 8 ) - EDITARE")
             print("( 9 ) - pentru a genera un graf intamplator")
             o = input()
@@ -452,11 +378,8 @@ class GRAF:
             elif o == "c":
                 self.impota()
                 self.determinaFordMinim()
-                self.determinaBellmanKalabaMinim()  
-                self.determinaFordMaxim()     
-                self.determinaBellmanKalabaMaxim()         
+                self.determinaBellmanKalabaMinim()                
                 self.deseneazaGraful()
-                # self.determinareaCatalinHimselfDrumuluiMaxim()
             elif o == "1":
                 self.citirea()
             elif o == "s":
@@ -471,8 +394,6 @@ class GRAF:
                 self.determinaBellmanKalabaMinim()
             elif o == "6":
                 self.determinaFordMaxim()
-            elif o == "7":
-                self.determinaBellmanKalabaMaxim()
             elif o == "8":
                 self.edit()
             elif o == "9":
@@ -486,8 +407,6 @@ class GRAF:
                 print("graf:",self.graf)
                 print("drum minim:",self.drumMinim)
                 print("drumurile minime:",self.minListe)
-                print("drum maxim:",self.drumMaxim)
-                print("drumurile maxim:",self.maxListe)
 
 
 graf = GRAF()
