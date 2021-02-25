@@ -194,10 +194,12 @@ class GRAF:
         for l in listePosibile:
             suma = 0
             pref = start
+            weight = 0
             for v in l:
-                if v != pref:
+                if v != start:
                     weight = [item for item in self.graf[pref] if v in item]
-                    suma += weight[0][1]
+                    suma += weight.pop()[1]
+                # print("varf", v, "suma", suma, "weight", weight)
                 pref = v
             if suma == self.drumMinim:
                 listeValide.append(l)
@@ -208,7 +210,7 @@ class GRAF:
                 if v != pref:
                     print(pref, end="")
                     weight = [item for item in self.graf[pref] if v in item]
-                    print(" =("+str(weight[0][1]) + ")=>", end=" ")
+                    print(" =("+str(weight.pop()[1]) + ")=>", end=" ")
                 pref = v
             print(pref)
         # print(listeValide)
@@ -309,7 +311,7 @@ class GRAF:
                 self.edit()
             elif o == "9":
                 self.graf = defaultdict(list)
-                for i in range(0, random.randint(15, 35)):
+                for i in range(0, random.randint(7, 15)):
                     self.adaugaArc(random.randint(1, 7), random.randint(
                         1, 7), random.randint(1, 10))
                 self.curatare()
