@@ -150,12 +150,18 @@ class GRAF:
         print(ford.get_string(title="Ford drum maxim"))
         self.drumMaxim = int(H[list(H).pop()])
         self.determinaFordInput(H)
+        # tabelulH = PrettyTable()
+        # tabelulH.field_names = ["H", "val"]
+        # H = dict(sorted(H.items()))
+        # for k in [*H]:
+        #     tabelulH.add_row(["H"+str(k), str(H[k])])
+        # print(tabelulH)
     def determinaFordInput(self,etichete):
         grafInversat = defaultdict(list)
         for k in [*self.graf]:
             for v in self.graf[k]:
                 grafInversat[v[0]].append((k,v[1]))
-        print(grafInversat)
+        # print(grafInversat)
         start = list(self.graf).pop(0)    
         finish = list(self.graf).pop()
         drumuri = [[finish]]
@@ -173,10 +179,10 @@ class GRAF:
                         if etichete[drum[len(drum)-1]] -v[1] ==etichete[v[0]]:
                             temp.append(drum+[v[0]])
                     else:
-                        print(  etichete[drum[len(drum)-1]] ,etichete[v[0]] ,v)
+                        # print(  etichete[drum[len(drum)-1]] ,etichete[v[0]] ,v)
                         if    etichete[drum[len(drum)-1 ]] - etichete[v[0]]  ==v[1]:
                             temp.append(drum+[v[0]])
-                            print(v)
+                            # print(v)
             if not temp:
                 break
             drumuri=temp
@@ -326,10 +332,11 @@ class GRAF:
         print("D",drum,"= ", (self.drumMinim,self.drumMaxim)[drum=="maxim"])
         for l in (self.minListe,self.maxListe)[drum=="maxim"]:
             pref = list(self.graf).pop(0)
+            weight = []
             for v in l:
                 if v != pref:
                     print(pref, end="")
-                    weight = [item for item in self.graf[pref] if v in item]
+                    weight = [item for item in self.graf[pref] if v == item[0]]
                     print(" =("+str(weight.pop()[1]) + ")=>", end=" ")
                 pref = v
             print(pref)
