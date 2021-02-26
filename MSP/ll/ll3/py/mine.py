@@ -149,13 +149,7 @@ class GRAF:
                 ford.add_row(line)
         print(ford.get_string(title="Ford drum maxim"))
         self.drumMaxim = int(H[list(H).pop()])
-        self.determinaFordInput(H)
-        # tabelulH = PrettyTable()
-        # tabelulH.field_names = ["H", "val"]
-        # H = dict(sorted(H.items()))
-        # for k in [*H]:
-        #     tabelulH.add_row(["H"+str(k), str(H[k])])
-        # print(tabelulH)
+        self.determinaFordInput(H) 
     def determinaFordInput(self,etichete):
         grafInversat = defaultdict(list)
         for k in [*self.graf]:
