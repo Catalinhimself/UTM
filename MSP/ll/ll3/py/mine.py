@@ -387,8 +387,8 @@ class GRAF:
                 g.add_edge(i, j[0], weight=j[1])
         pos = nx.circular_layout(g)
         edge_labels = {(u, v): d['weight'] for u, v, d in g.edges(data=True)}
-        nx.draw(g, pos, with_labels=True, node_size=700, font_size=20)
-        nx.draw_networkx_edge_labels(g, pos, edge_labels=edge_labels)
+        nx.draw(g, pos, with_labels=True, node_size=1700, font_size=40)
+        nx.draw_networkx_edge_labels(g, pos, edge_labels=edge_labels,font_size=20)
         plt.savefig('output.png')
         plt.show()
 
