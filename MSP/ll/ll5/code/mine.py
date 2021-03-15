@@ -52,49 +52,6 @@ class GRAF:
                 print(str(v)+"(" + str(self.c[(k, v)]) + "), ", end="")
             print("0")
 
-    def parcugereaAdancime(self, start):
-        for k in [*self.graf]:
-            for v in self.graf[k]:
-                if not v in self.graf:
-                    self.graf[v] = []
-        vizitat = {}
-        for k in [*self.graf]:
-            vizitat[k] = False
-        stiva = []
-        parcurgerea = []
-        parcurgerea.append(start)
-        stiva.append(start)
-        vizitat[start] = True
-        while stiva:
-            aici = stiva[len(stiva)-1]
-            if not vizitat[aici]:
-                parcurgerea.append(aici)
-                vizitat[aici] = True
-            gata = 0
-            for varf in self.graf[aici]:
-                if not vizitat[varf]:
-                    stiva.append(varf)
-                    break
-                else:
-                    gata += 1
-            if not self.graf[aici]:
-                stiva.pop()
-            elif gata == len(self.graf[aici]):
-                stiva.pop()
-        capet = False
-        for hz in [*vizitat]:
-            if not vizitat[hz]:
-                capet = True
-        if capet:
-            print("incepand cu varful", start,
-                  "graful nu poate fi parcurs in adancime")
-            print(vizitat)
-        else:
-            print("parcurgerea in adancime incepand din", start)
-            for v in parcurgerea:
-                print(v, end=" ")
-            print()
-
     def salveaza(self):
         print("denumirea fisierului")
         f = input()
@@ -136,7 +93,7 @@ class GRAF:
         edge_labels = {(u, v): d['weight'] for u, v, d in g.edges(data=True)}
         nx.draw(g, pos, with_labels=True, node_size=1700, font_size=40)
         nx.draw_networkx_edge_labels(
-            g, pos, edge_labels=edge_labels, font_size=20)
+            g, pos, edge_labels=edge_labels, font_size=10)
         plt.savefig('output.png')
         plt.show()
         # subprocess.run(["google-chrome", "output.png"])
@@ -164,7 +121,10 @@ class GRAF:
         e = int(input())
         print("varful in care intra muchia :")
         i = int(input())
-        self.adaugaArc(e, i)
+        self.graf[e] = i
+        print("capacitatea:")
+        c = int(input())
+        self.c[(e, i)] = c
 
     def edit(self):
         print("puteti :\nsterge un varf - v\nsterge o muchie - m\nadauga o muchie - a")
@@ -190,26 +150,45 @@ class GRAF:
             if not intrari[v]:
                 self.sursa = v
 
+    def dfs(self, visited, graph, node):
+        if node not in visited:
+            print(node)
+            visited.add(node)
+            for neighbour in graph[node]:
+                self.dfs(visited, graph, neighbour)
+
     def F_F(self):
         print("ff you")
         for k in [*self.c]:
             self.f[k].append(0)
             print(self.f[k])
-
-        visited = set()
-        self.DFS(self.sursa, visited)
-
-    def DFS(self, v, visited):
-
-        visited.add(v)
-        print(v, end=' ')
-
-        for neighbour in self.graf[v]:
-            if neighbour not in visited:
-                self.DFS(neighbour, visited)
-
+        while True:
+            
     def cat(self):
         print("cat")
+        l1 = []
+        l2 = []
+        s = self.sursa
+        f = self.destinatia
+        l1.append([s])
+        final = []
+        while l1:
+            for l in l1:
+                if l[len(l)-1] == f:
+                    break
+                for v in self.graf[l[len(l)-1]]:
+                    if v not in l:
+                        l2.append(l+[v])
+                for l in l2:
+                    if l[0] == s and l[len(l)-1] == f:
+                        final.append(l)
+            l1 = l2
+            l2 = []
+        finalfinal = []
+        for l in final:
+            if l not in finalfinal:
+                finalfinal.append(l)
+        return finalfinal
 
     def START(self):
         print("program la msp")
@@ -257,7 +236,6 @@ graf.impota("1")
 graf.afiseazaLista()
 graf.determinare_a_b()
 graf.F_F()
-graf.cat()
 graf.deseneazaGraful()
 
 # graf.START()
