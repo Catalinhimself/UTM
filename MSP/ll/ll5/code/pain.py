@@ -20,7 +20,6 @@ ug = defaultdict(list)
 for k in [*g]:
     for v in g[k]:
         ug[v].append(k)
-        ug[k].append(v)
 
 print(g)
 print(c)
@@ -36,9 +35,20 @@ while g[s]:
         if g[s] == []:
             break
         last = list(l).pop()
+
+        # if g[last] == []:
+        #     if ug[last]:
+        #         for o in ug[last]:
+        #             if o not in l:
+        #                 if sum(f[(o, last)]):
+        #                     m[o].append(("-", last))
+        #                     l.append(o)
+        #                     last = list(l).pop()
+        #                     break
         if g[last] == []:
             g[l[len(l)-2]].remove(last)
             l.pop()
+            last = list(l).pop()
         if last == t:
             break
         if t in g[last]:
@@ -62,6 +72,13 @@ while g[s]:
                         if len(l)-2 != 0:
                             m[l[len(l)-2]].pop()
                         l.pop()
+                        # minus
+                        # if ug[last]:
+                        #     for o in ug[last]:
+                        #         if o not in l:
+                        #             if sum(f[(o, last)]) > 0:
+                        #                 m[o].append(("-", last))
+                        #                 l.append(o)
                     break
     if g[s] == []:
         break

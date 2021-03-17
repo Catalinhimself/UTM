@@ -1,7 +1,12 @@
-rd = int(input("resursele disponibile: "))
-x = int(input("costul x: "))
-y = int(input("costul y: "))
-z = int(input("bunul z (0 in caz ca nu este): "))
+##import matplotlib.pyplot as plt
+print("resursele disponibile:")
+rd = int(input())
+print("costul x")
+x = int(input())
+print("costul y")
+y = int(input())
+print("bunul z")
+z = int(input())
 # rd = 27000
 # x = 300
 # y = 900
@@ -27,8 +32,8 @@ print("pasul y", py)
 tx = []
 ty = []
 for i in range(0, p+1):
-    tx.append(px*i)
-    ty.append(by-py*i)
+    tx.append(int(px*i))
+    ty.append(int(by-py*i))
 
 print("3. graficul curbei posibilitatilor")
 
@@ -41,7 +46,5 @@ print('y', ty)
 print("5. verificam datele")
 for i in range(0, p+1):
     print(tx[i], "*", x, "+", ty[i], "*", y, "=", tx[i]*x+ty[i]*y)
-if input("aveti matplotlib? [y/n]:") == "y":
-    import matplotlib.pyplot as plt
-    plt.plot(tx, ty)
-    plt.show()
+plt.plot(tx, ty)
+plt.show()
