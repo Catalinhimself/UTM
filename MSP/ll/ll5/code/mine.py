@@ -13,6 +13,13 @@ class GRAF:
         self.f = defaultdict(list)
         self.sursa = 0
         self.destinatia = 0
+        self.fMax = 0
+        self.L = []
+        self.E = []
+        self.A = []
+        self.X = []
+        self.XA = []
+        self.WA = []
 
     def citirea(self):
         print("citirea listei de adiacenta")
@@ -35,7 +42,17 @@ class GRAF:
         self.curatare()
 
     def curatare(self):
-        # self.graf = dict(sorted(self.graf.items()))
+        self.c = defaultdict(int)
+        self.f = defaultdict(list)
+        self.sursa = 0
+        self.destinatia = 0
+        self.fMax = 0
+        self.L = []
+        self.E = []
+        self.A = []
+        self.X = []
+        self.XA = []
+        self.WA = []
         for v in [*self.graf]:
             for c in self.graf[v]:
                 if c not in [*self.graf]:
@@ -93,7 +110,7 @@ class GRAF:
         edge_labels = {(u, v): d['weight'] for u, v, d in g.edges(data=True)}
         nx.draw(g, pos, with_labels=True, node_size=1700, font_size=40)
         nx.draw_networkx_edge_labels(
-            g, pos, edge_labels=edge_labels, font_size=10)
+            g, pos, edge_labels=edge_labels, font_size=17)
         plt.savefig('output.png')
         plt.show()
         # subprocess.run(["google-chrome", "output.png"])
@@ -150,45 +167,137 @@ class GRAF:
             if not intrari[v]:
                 self.sursa = v
 
-    def dfs(self, visited, graph, node):
-        if node not in visited:
-            print(node)
-            visited.add(node)
-            for neighbour in graph[node]:
-                self.dfs(visited, graph, neighbour)
+    def Ford_Fulkerson_pain(self):
 
-    def F_F(self):
-        print("ff you")
-        for k in [*self.c]:
-            self.f[k].append(0)
-            print(self.f[k])
-        while True:
-            
-    def cat(self):
-        print("cat")
-        l1 = []
-        l2 = []
+        F_max = 0
         s = self.sursa
-        f = self.destinatia
-        l1.append([s])
-        final = []
-        while l1:
-            for l in l1:
-                if l[len(l)-1] == f:
-                    break
-                for v in self.graf[l[len(l)-1]]:
-                    if v not in l:
-                        l2.append(l+[v])
-                for l in l2:
-                    if l[0] == s and l[len(l)-1] == f:
-                        final.append(l)
-            l1 = l2
-            l2 = []
-        finalfinal = []
-        for l in final:
-            if l not in finalfinal:
-                finalfinal.append(l)
-        return finalfinal
+        t = self.destinatia
+        m = defaultdict(list)
+        rg = defaultdict(list)
+        c = self.c
+        g = self.graf
+
+        f = self.f
+        for k in [*c]:
+            f[k].append(0)
+
+        # cod ciotkii) =>
+        z = 1
+        A = []
+        while True:
+            l = [s]
+            blacklist = set()
+            while l[len(l)-1] != t:
+                remove = True
+                for v in g[l[len(l)-1]]:
+                    # print(l)
+                    if v not in l and v not in blacklist:
+                        if sum(f[(l[len(l)-1], v)]) != c[(l[len(l)-1], v)]:
+                            # print("inainte")
+                            m[v].append(("+", l[len(l)-1]))
+                            rg[v].append(l[len(l)-1])
+                            l.append(v)
+                            remove = False
+                            break
+                for v in rg[l[len(l)-1]]:
+                    if v not in l and v not in blacklist:
+                        if sum(f[v, (l[len(l)-1])]):
+                            # print("inapoi")
+                            m[v].append(("-", l[len(l)-1]))
+                            l.append(v)
+                            remove = False
+                            break
+                if remove:
+                    blacklist.add(l[len(l)-1])
+                    if m[l[len(l)-1]]:
+                        m[l[len(l)-1]].pop()
+                    l.pop()
+                    if s in blacklist:
+                        A = blacklist
+                        break
+                # print(blacklist)
+            if A:
+                break
+            # print("l", z, l)
+            self.L.append(l)
+            E = []
+            for i in range(1, len(l)):
+                e = list(m[l[i]]).pop()
+                if e[0] == "+":
+                    E.append(c[(e[1], l[i])]-sum(f[(e[1], l[i])]))
+                else:
+                    E.append(sum(f[(l[i], e[1])]))
+            # print("E", z, " _ min", E, end=" = ")
+            self.E.append(E)
+            E = min(E)
+            # print(E)
+            F_max += E
+            # print("F_max", F_max)
+            for i in l:
+                if i == s:
+                    p = s
+                else:
+                    if list(m[i]).pop()[0] == "+":
+                        f[(p, i)].append(E)
+                    else:
+                        f[(i, p)].append(-E)
+                    p = i
+            z += 1
+
+        # print("A", A)
+        X = list(g)
+        # print(X)
+        XA = [i for i in X if i not in A]
+        # print(XA)
+        print(A)
+        print(XA)
+        for o in A:
+            for d in XA:
+                if (o, d) in [*c]:
+                    self.WA.append((o, d))
+        self.A = A
+        self.X = X
+        self.XA = XA
+        self.fMax = F_max
+
+    def afiseazadata(self):
+        s3 = '‾'*65
+        for i in range(0, len(self.L)):
+            s1 = "l"+str(i+1) + " = "+str(self.L[i])
+            s2 = "E" + str(i+1) + " =  min " + \
+                str(self.E[i]) + " = "+str(min(self.E[i]))
+            print(s3)
+            print('{:30s} {:>1} {:30s}'.format(s1, "|", s2))
+        print(s3)
+
+        for a in [*self.f]:
+            print("fluxul arcului", a[0], "->", a[1], "=", sum(self.f[a]))
+        print(s3)
+
+        print("Secțiunea minimală se obține pentru A =",
+              self.XA, "(mulțimea vârfurilor nemarcate )")
+        print("W-A", self.WA, "- tăietura de capacitate minimă,")
+        capacitatea = 0
+        print("c", end="")
+        i = 0
+        for a in self.WA:
+            i += 1
+            capacitatea += self.c[a]
+            print(self.c[a],   end="")
+            if i != len(self.WA):
+                print("+", end="")
+        print("=", capacitatea, " –capacitatea tăieturii")
+        print("Conform teoremei lui Ford-Fulkerson")
+        print("F_max =c", end="")
+        flux = 0
+        i = 0
+        for a in self.WA:
+            i += 1
+            flux += self.c[a]
+            print(self.c[a], end="")
+            if i != len(self.WA):
+                print("+", end="")
+        print("=", self.fMax)
 
     def START(self):
         print("program la msp")
@@ -222,20 +331,23 @@ class GRAF:
             elif o == "3":
                 self.deseneazaGraful()
             elif o == "4":
-                self.F_F()
+                self.Ford_Fulkerson_pain()
+                self.afiseazadata()
             elif o == "8":
                 self.edit()
             elif o == "h":
                 print("graf:", self.graf)
                 print("capacitati:", self.c)
+                print("flux", self.f)
 
 
 graf = GRAF()
 
-graf.impota("1")
-graf.afiseazaLista()
-graf.determinare_a_b()
-graf.F_F()
-graf.deseneazaGraful()
+# graf.impota("2")
+# graf.afiseazaLista()
+# graf.determinare_a_b()
+# graf.Ford_Fulkerson_pain()
+# graf.afiseazadata()
+# graf.deseneazaGraful()
 
-# graf.START()
+graf.START()

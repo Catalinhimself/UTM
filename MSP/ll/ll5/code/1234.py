@@ -1,118 +1,74 @@
-import networkx as nx
-import matplotlib.pyplot as plt
+class Edge(object):
+    def __init__(self, u, v, w):
+        self.source = u
+        self.sink = v
+        self.capacity = w
+
+    def __repr__(self):
+        return "%s->%s:%s" % (self.source, self.sink, self.capacity)
 
 
-def ford_fulkerson(graph, source, sink, debug=None):
-    flow, path = 0, True
+class FlowNetwork(object):
+    def __init__(self):
+        self.adj = {}
+        self.flow = {}
 
-    while path:
-        # search for path with flow reserve
-        path, reserve = depth_first_search(graph, source, sink)
-        flow += reserve
+    def add_vertex(self, vertex):
+        self.adj[vertex] = []
 
-        # increase flow along the path
-        for v, u in zip(path, path[1:]):
-            if graph.has_edge(v, u):
-                graph[v][u]['flow'] += reserve
-            else:
-                graph[u][v]['flow'] -= reserve
+    def get_edges(self, v):
+        return self.adj[v]
 
-        # show intermediate results
-        if callable(debug):
-            debug(graph, path, reserve, flow)
+    def add_edge(self, u, v, w=0):
+        if u == v:
+            raise ValueError("u == v")
+        edge = Edge(u, v, w)
+        redge = Edge(v, u, 0)
+        edge.redge = redge
+        redge.redge = edge
+        self.adj[u].append(edge)
+        self.adj[v].append(redge)
+        self.flow[edge] = 0
+        self.flow[redge] = 0
 
+    def find_path(self, source, sink, path):
+        if source == sink:
+            return path
+        for edge in self.get_edges(source):
+            residual = edge.capacity - self.flow[edge]
+            if residual > 0 and edge not in path:
+                result = self.find_path(edge.sink, sink, path + [edge])
+                if result is not None:
+                    return result
 
-def depth_first_search(graph, source, sink):
-    undirected = graph.to_undirected()
-    explored = {source}
-    stack = [(source, 0, dict(undirected[source]))]
-
-    while stack:
-        v, _, neighbours = stack[-1]
-        if v == sink:
-            break
-
-        # search the next neighbour
-        while neighbours:
-            u, e = neighbours.popitem()
-            if u not in explored:
-                break
-        else:
-            stack.pop()
-            continue
-
-        # current flow and capacity
-        in_direction = graph.has_edge(v, u)
-        capacity = e['capacity']
-        flow = e['flow']
-        neighbours = dict(undirected[u])
-
-        # increase or redirect flow at the edge
-        if in_direction and flow < capacity:
-            stack.append((u, capacity - flow, neighbours))
-            explored.add(u)
-        elif not in_direction and flow:
-            stack.append((u, flow, neighbours))
-            explored.add(u)
-
-    # (source, sink) path and its flow reserve
-    reserve = min((f for _, f, _ in stack[1:]), default=0)
-    path = [v for v, _, _ in stack]
-
-    return path, reserve
+    def max_flow(self, source, sink):
+        path = self.find_path(source, sink, [])
+        print(path)
+        while path is not None:
+            residuals = [edge.capacity - self.flow[edge] for edge in path]
+            flow = min(residuals)
+            for edge in path:
+                self.flow[edge] += flow
+                self.flow[edge.redge] -= flow
+            path = self.find_path(source, sink, [])
+        return sum(self.flow[edge] for edge in self.get_edges(source))
 
 
-graph = nx.DiGraph()
-graph.add_nodes_from('ABCDEFGH')
-graph.add_edges_from([
-    ('A', 'B', {'capacity': 4, 'flow': 0}),
-    ('A', 'C', {'capacity': 5, 'flow': 0}),
-    ('A', 'D', {'capacity': 7, 'flow': 0}),
-    ('B', 'E', {'capacity': 7, 'flow': 0}),
-    ('C', 'E', {'capacity': 6, 'flow': 0}),
-    ('C', 'F', {'capacity': 4, 'flow': 0}),
-    ('C', 'G', {'capacity': 1, 'flow': 0}),
-    ('D', 'F', {'capacity': 8, 'flow': 0}),
-    ('D', 'G', {'capacity': 1, 'flow': 0}),
-    ('E', 'H', {'capacity': 7, 'flow': 0}),
-    ('F', 'H', {'capacity': 6, 'flow': 0}),
-    ('G', 'H', {'capacity': 4, 'flow': 0}),
-])
-print(graph)
+def main():
+    g = FlowNetwork()
+    [g.add_vertex(v) for v in "sopqrt"]
 
-layout = {
-    'A': [0, 1], 'B': [1, 2], 'C': [1, 1], 'D': [1, 0],
-    'E': [2, 2], 'F': [2, 1], 'G': [2, 0], 'H': [3, 1],
-}
+    g.add_edge('s', 'o', 3)
+    g.add_edge('s', 'p', 3)
+    g.add_edge('o', 'p', 2)
+    g.add_edge('o', 'q', 3)
+    g.add_edge('p', 'r', 2)
+    g.add_edge('r', 't', 3)
+    g.add_edge('q', 'r', 4)
+    g.add_edge('q', 't', 2)
+
+    print(g.max_flow('s', 't'))
 
 
-def draw_graph():
-    plt.figure(figsize=(12, 4))
-    plt.axis('off')
-
-    nx.draw_networkx_nodes(
-        graph, layout, node_color='steelblue', node_size=600)
-    nx.draw_networkx_edges(graph, layout, edge_color='gray')
-    nx.draw_networkx_labels(graph, layout, font_color='white')
-
-    for u, v, e in graph.edges(data=True):
-        label = '{}/{}'.format(e['flow'], e['capacity'])
-        color = 'green' if e['flow'] < e['capacity'] else 'red'
-        x = layout[u][0] * .6 + layout[v][0] * .4
-        y = layout[u][1] * .6 + layout[v][1] * .4
-        t = plt.text(x, y, label, size=16, color=color,
-                     horizontalalignment='center', verticalalignment='center')
-
-    plt.show()
-
-
-def flow_debug(graph, path, reserve, flow):
-    print('flow increased by', reserve,
-          'at path', path,
-          '; current flow', flow)
-    # draw_graph()
-
-
-# draw_graph()
-
-ford_fulkerson(graph, 'A', 'H', flow_debug)
+if __name__ == '__main__':
+    main()
