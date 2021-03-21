@@ -24,6 +24,7 @@ class GRAF:
     def citirea(self):
         print("citirea listei de adiacenta")
         self.graf = defaultdict(list)
+        self.c = defaultdict(int)
         i = 1
         while True:
             print("pentru a termina tastati ( q )")
@@ -42,7 +43,6 @@ class GRAF:
         self.curatare()
 
     def curatare(self):
-        self.c = defaultdict(int)
         self.f = defaultdict(list)
         self.sursa = 0
         self.destinatia = 0
@@ -140,8 +140,7 @@ class GRAF:
         i = int(input())
         self.graf[e] = i
         print("capacitatea:")
-        c = int(input())
-        self.c[(e, i)] = c
+        self.c[(e, i)] = int(input())
 
     def edit(self):
         print("puteti :\nsterge un varf - v\nsterge o muchie - m\nadauga o muchie - a")
