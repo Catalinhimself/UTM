@@ -20,7 +20,7 @@ int afiseaza_meniu()
     return m;
 }
 
-int afiseaza_meniu_cautare()
+int afiseaza_submeniu_criterii()
 {
     printf("Dupa proprietar%4d\n", 1);
     printf("Dupa tip%11d\n", 2);
