@@ -6,6 +6,7 @@ try:
 except ImportError:
     visual_libs = False
 import json
+import random
 
 
 class GRAF:
@@ -129,6 +130,7 @@ class GRAF:
             if visual_libs:
                 print("( 3 ) - pentru a afisa forma grafica")
             print("( 4 ) - pentru a efectua genera graful de acoperire")
+            print("( r | random )")
             o = input()
             if o == "q":
                 break
@@ -146,9 +148,20 @@ class GRAF:
             elif o == "4":
                 v = int(input("radacina grafuli de acoperire este: "))
                 if v not in self.graf.keys():
-                    print("radacina invalida, se va lua radacina 1")
-                    v = 1
+                    print("radacina invalida, se va lua radacina",
+                          list(self.graf.keys()).pop(0))
+                    v = list(self.graf.keys()).pop(0)
                 self.graf_de_acoperire(v)
+            elif o == "random" or o == "r":
+                self.graf = defaultdict(list)
+                maxX = random.randint(20, 100)
+                U = random.randint(maxX*2, maxX*10)
+                for i in range(U):
+                    a = random.randint(0, maxX)
+                    b = random.randint(0, maxX)
+                    self.adaugaArc(a, b)
+                    self.adaugaArc(b, a)
+                self.curatare()
 
 
 graf = GRAF()
