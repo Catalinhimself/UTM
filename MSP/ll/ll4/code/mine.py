@@ -1,12 +1,19 @@
 from collections import defaultdict
+import json
+import random
 try:
     import networkx as nx
     import matplotlib.pyplot as plt
     visual_libs = True
 except ImportError:
     visual_libs = False
-import json
-import random
+try:
+    import colorama
+    from colorama import Fore, Back, Style
+    colorama.init(autoreset=True)
+    color = True
+except ImportError:
+    color = False
 
 
 class GRAF:
@@ -43,7 +50,10 @@ class GRAF:
             self.graf[v] = list(dict.fromkeys(self.graf[v]))
 
     def afiseazaLista(self):
-        print("lista de adiacenta")
+        if color:
+            print(Back.YELLOW+Fore.BLACK+"lista de adiacenta")
+        else:
+            print("lista de adiacenta")
         for k in [*self.graf]:
             print(k, "|", end=" ")
             for v in self.graf[k]:
@@ -99,13 +109,19 @@ class GRAF:
     def salveaza(self):
         f = input("dati denumirea fisierului ( fara extensie ): ")
         json.dump(self.graf, open(f+".json", 'w'))
-        print("fisierul salvat cu succes")
+        if color:
+            print(Fore.GREEN+"fisierul salvat cu succes")
+        else:
+            print("fisierul salvat cu succes")
 
     def impota(self):
         f = input("dati denumirea fisierului ( fara extensie ): ")
         self.graf = json.load(open(f+".json"))
         self.graf = {int(k): [int(i) for i in v] for k, v in self.graf.items()}
-        print("fisierul importa cu succes")
+        if color:
+            print(Fore.GREEN+"fisierul importa cu succes")
+        else:
+            print("fisierul importa cu succes")
 
     def deseneazaGraful(self):
         g = nx.DiGraph()
@@ -148,10 +164,19 @@ class GRAF:
             elif o == "4":
                 v = int(input("radacina grafuli de acoperire este: "))
                 if v not in self.graf.keys():
-                    print("radacina invalida, se va lua radacina",
-                          list(self.graf.keys()).pop(0))
+                    if color:
+                        print(Fore.BLACK+Back.RED+"radacina invalida, se va lua radacina",
+                              list(self.graf.keys()).pop(0))
+                    else:
+                        print("radacina invalida, se va lua radacina",
+                              list(self.graf.keys()).pop(0))
                     v = list(self.graf.keys()).pop(0)
                 self.graf_de_acoperire(v)
+                if color:
+                    print(Back.GREEN+Fore.BLACK +
+                          "Graful de acoperire generat cu succes")
+                else:
+                    print("Graful de acoperire generat cu succes")
             elif o == "random" or o == "r":
                 self.graf = defaultdict(list)
                 maxX = random.randint(20, 100)
