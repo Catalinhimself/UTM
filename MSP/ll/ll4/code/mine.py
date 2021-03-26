@@ -50,10 +50,7 @@ class GRAF:
             self.graf[v] = list(dict.fromkeys(self.graf[v]))
 
     def afiseazaLista(self):
-        if color:
-            print(Back.YELLOW+Fore.BLACK+"lista de adiacenta")
-        else:
-            print("lista de adiacenta")
+        print(f'{Back.YELLOW+Fore.BLACK if color else ""}lista de adiacenta')
         for k in [*self.graf]:
             print(k, "|", end=" ")
             for v in self.graf[k]:
@@ -109,19 +106,13 @@ class GRAF:
     def salveaza(self):
         f = input("dati denumirea fisierului ( fara extensie ): ")
         json.dump(self.graf, open(f+".json", 'w'))
-        if color:
-            print(Fore.GREEN+"fisierul salvat cu succes")
-        else:
-            print("fisierul salvat cu succes")
+        print(f'{Back.GREEN+Fore.BLACK if color else ""}fisierul salvat cu succes')
 
     def impota(self):
         f = input("dati denumirea fisierului ( fara extensie ): ")
         self.graf = json.load(open(f+".json"))
         self.graf = {int(k): [int(i) for i in v] for k, v in self.graf.items()}
-        if color:
-            print(Fore.GREEN+"fisierul importa cu succes")
-        else:
-            print("fisierul importa cu succes")
+        print(f'{Back.GREEN+Fore.BLACK if color else ""}fisierul importa cu succes')
 
     def deseneazaGraful(self):
         g = nx.DiGraph()
@@ -145,7 +136,8 @@ class GRAF:
             print("( 2 ) - pentru a afisa lista")
             if visual_libs:
                 print("( 3 ) - pentru a afisa forma grafica")
-            print("( 4 ) - pentru a efectua genera graful de acoperire")
+            print(
+                f'( 4 ) - pentru a efectua genera graful de  {Fore.BLUE if color else ""}acoperire')
             print("( r | random )")
             o = input()
             if o == "q":
@@ -164,19 +156,13 @@ class GRAF:
             elif o == "4":
                 v = int(input("radacina grafuli de acoperire este: "))
                 if v not in self.graf.keys():
-                    if color:
-                        print(Fore.BLACK+Back.RED+"radacina invalida, se va lua radacina",
-                              list(self.graf.keys()).pop(0))
-                    else:
-                        print("radacina invalida, se va lua radacina",
-                              list(self.graf.keys()).pop(0))
+                    print(
+                        f'{Fore.BLACK+Back.RED if color else ""}radacina invalida, se va lua radacina {list(self.graf.keys()).pop(0)}')
                     v = list(self.graf.keys()).pop(0)
                 self.graf_de_acoperire(v)
-                if color:
-                    print(Back.GREEN+Fore.BLACK +
-                          "Graful de acoperire generat cu succes")
-                else:
-                    print("Graful de acoperire generat cu succes")
+                print(
+                    f'{Back.GREEN+Fore.BLACK if color else ""}Graful de acoperire generat cu succes')
+
             elif o == "random" or o == "r":
                 self.graf = defaultdict(list)
                 maxX = random.randint(20, 100)
