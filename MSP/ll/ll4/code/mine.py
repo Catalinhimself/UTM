@@ -19,6 +19,9 @@ except ImportError:
 class GRAF:
     def __init__(self):
         self.graf = defaultdict(list)
+        self.varf = 1500
+        self.font = 30
+        self.linie = 5
 
     def adaugaArc(self, initial, terminal):
         self.graf[initial].append(terminal)
@@ -115,12 +118,12 @@ class GRAF:
         print(f'{Back.GREEN+Fore.BLACK if color else ""}fisierul importa cu succes')
 
     def deseneazaGraful(self):
-        g = nx.DiGraph()
+        g = nx.Graph()
         for i in [*self.graf]:
             for j in self.graf[i]:
                 g.add_edge(i, j)
-        nx.draw(g, with_labels=True, node_size=1700,
-                font_size=40, edge_color='r', width=5)
+        nx.draw(g, with_labels=True, node_size=self.varf,
+                font_size=self.font, edge_color='r', width=self.linie)
         plt.draw()
         plt.show()
 
@@ -144,8 +147,14 @@ class GRAF:
                 break
             elif o == "c":
                 self.impota()
+                self.varf = 1700
+                self.font = 30
+                self.linie = 5
             elif o == "1":
                 self.citirea()
+                self.varf = 1700
+                self.font = 30
+                self.linie = 5
             elif o == "s":
                 self.salveaza()
             elif o == "2":
@@ -165,7 +174,10 @@ class GRAF:
 
             elif o == "random" or o == "r":
                 self.graf = defaultdict(list)
-                maxX = random.randint(20, 100)
+                maxX = random.randint(20, 500)
+                self.varf = 500
+                self.font = 10
+                self.linie = 3
                 U = random.randint(maxX*2, maxX*10)
                 for i in range(U):
                     a = random.randint(0, maxX)
