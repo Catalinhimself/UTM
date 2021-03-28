@@ -6,28 +6,100 @@
 
 #include <errno.h>
 
-#include "header.h"
+#include "./headers/header.h"
 
 int main()
 {
     imobil *cap = NULL;
     int nr = 0;
     printf("__main_program__\n");
-    // afiseaza_meniu();
-    // cap = creaza_lista();
-    cap = creaza_lista_demo(100);
-    nr = afiseaza_lista(cap);
-    printf("numarul de elemente ale liste: %d\n", nr);
-    // cauta_structura(cap);
-    // modifica_structura(cap);
-    // determina_ultimul_pointer(cap);
-    // cap = interschimba_2_elemente(cap, nr);
-    // sorteaza_lista(cap);
-    // afiseaza_lista(cap);
-    elibereaza_memoria_listei(&cap);
-    printf("%p", cap);
-    afiseaza_lista(cap);
-    // get_struct_info(determina_ultimul_pointer(cap));
-    // get_struct_info(cap);
+
+    int meniu = 999;
+    do
+    {
+        meniu = afiseaza_meniu();
+        switch (meniu)
+        {
+        case 1:
+        {
+            cap = creaza_lista();
+        }
+        break;
+        case 2:
+        {
+            printf("dati numarul de elemente in lista: ");
+            int elemente;
+            scanf("%d", &elemente);
+            cap = creaza_lista_demo(elemente);
+        }
+        break;
+        case 3:
+        {
+            nr = afiseaza_lista(cap);
+        }
+        break;
+        case 4:
+        {
+            cauta_structura(cap);
+        }
+        break;
+        case 5:
+        {
+            modifica_structura(cap);
+        }
+        break;
+        case 6:
+        {
+            determina_ultimul_pointer(cap);
+        }
+        break;
+        case 7:
+        {
+            nr = afiseaza_lista(cap);
+            printf("numarul de elemente din lista de mai sus este: %d\n", nr);
+        }
+        break;
+        case 8:
+        {
+            nr = afiseaza_lista(cap);
+            cap = interschimba_2_elemente(cap, nr);
+        }
+        break;
+        case 9:
+        {
+            sorteaza_lista(cap);
+        }
+        break;
+        case 10:
+        {
+            elibereaza_memoria_listei(&cap);
+        }
+        break;
+        case 11:
+        {
+            imobil *temp = cap;
+            int B = 0;
+            while (temp)
+            {
+                B += get_struct_info(temp);
+                temp = temp->next;
+            }
+            int KB = B / 1024;
+            B -= KB * 1024;
+            int MB = KB / 1024;
+            KB -= MB * 1024;
+            printf("Memoria ocupata %d MB %d KB %d B\n", MB, KB, B);
+        }
+        break;
+        case 0:
+        {
+            elibereaza_memoria_listei(&cap);
+            exit(0);
+        }
+        break;
+        default:
+            break;
+        }
+    } while (meniu);
     return 0;
 }

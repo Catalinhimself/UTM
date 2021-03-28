@@ -1,5 +1,5 @@
-nu_program:
-	gcc -o cat main.c implementation.c menus.c
-	echo "program to run ./cat"
+program_ciotkii:
+	gcc -o ./executable/catalin main.c ./sources/implementation.c ./sources/menus.c
+	echo "to run the program 	./executable/catalin"
 	ls
-	./cat
+	./executable/catalin
