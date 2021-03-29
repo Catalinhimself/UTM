@@ -1,10 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <math.h>
-
-#include <errno.h>
 
 #include "./headers/header.h"
 
@@ -22,11 +17,13 @@ int main()
         {
         case 1:
         {
+            elibereaza_memoria_listei(&cap);
             cap = creaza_lista();
         }
         break;
         case 2:
         {
+            elibereaza_memoria_listei(&cap);
             printf("dati numarul de elemente in lista: ");
             int elemente;
             scanf("%d", &elemente);

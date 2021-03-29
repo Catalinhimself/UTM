@@ -42,15 +42,18 @@ imobil *citeste_element(int ord)
 
     char str[255];
     printf("proprietar: ");
-    scanf(" %s", str);
+    scanf("%c", &str[0]); // curata bufferul
+    scanf("%[^\n]", str);
     q->proprietar = (char *)malloc((strlen(str) + 1) * sizeof(char));
     strcpy(q->proprietar, str);
     printf("tip: ");
-    scanf(" %s", str);
+    scanf("%c", &str[0]); // curata bufferul
+    scanf("%[^\n]", str);
     q->tip = (char *)malloc((strlen(str) + 1) * sizeof(char));
     strcpy(q->tip, str);
     printf("adresa: ");
-    scanf(" %s", str);
+    scanf("%c", &str[0]); // curata bufferul
+    scanf("%[^\n]", str);
     q->adresa = (char *)malloc((strlen(str) + 1) * sizeof(char));
     strcpy(q->adresa, str);
     printf("suprafata : ");
@@ -286,6 +289,7 @@ void cauta_structura(imobil *cap)
     if (optiune == 4 || optiune == 5)
         printf("Imobilele cu %s cu valori pe intervalul %f - %f nu exista in lista data.\n", text, min, max);
 }
+
 void modifica_structura(imobil *cap)
 {
     if (cap == NULL)
@@ -380,6 +384,7 @@ imobil *determina_ultimul_pointer(imobil *cap)
     printf("ultima adresa: %p\n", t);
     return t;
 }
+
 imobil *interschimba_2_elemente(imobil *cap, int limita)
 {
     printf("__INTERSCHIMBAREA__\n");
@@ -570,16 +575,14 @@ void sorteaza_lista(imobil *cap)
 
 void elibereaza_memoria_listei(imobil **cap)
 {
-    imobil *t = *cap, *q;
-    while (t)
+    while (*cap)
     {
-        q = t->next;
+        imobil *t = *cap;
+        *cap = (*cap)->next;
         free(t->proprietar);
         free(t->tip);
         free(t->adresa);
         t->next = NULL;
         free(t);
-        t = q;
     }
-    *cap = NULL;
 }
