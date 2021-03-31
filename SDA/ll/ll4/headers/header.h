@@ -1,3 +1,5 @@
+#ifndef SOBOLAN
+#define SOBOLAN
 
 typedef struct _imobil
 {
@@ -30,3 +32,5 @@ int get_struct_info(imobil *struct_ptr);
 // meniuri
 int afiseaza_meniu();
 int afiseaza_submeniu_criterii();
+
+#endif // !SOBOLAN
