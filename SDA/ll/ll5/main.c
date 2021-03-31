@@ -26,6 +26,11 @@ int random_range(int min, int max)
 
 void pirnt_list(list *head)
 {
+    if (!head)
+    {
+        printf("lista este vida\n");
+        return;
+    }
     list *temp = head;
     printf("\n");
     while (temp)
@@ -90,11 +95,93 @@ list *reverse_list(list **head)
     }
     *head = prev;
 }
+int count_nodes(list *head)
+{
+    list *temp = head;
+    int count = 0;
+    while (temp)
+    {
+        count += 1;
+        temp = temp->next;
+    }
+    return count;
+}
+list **divide_in_n_lists_a(list *head, int n)
+{
+    list **aux = (list **)malloc(n * sizeof(list *));
+    list **liste = (list **)malloc(n * sizeof(list *));
+    for (int i = 0; i < n; i++)
+        liste[i] = NULL;
+    list *temp = head;
+    int cycle = 0;
+    while (temp)
+    {
+        if (cycle == n)
+            cycle = 0;
+        if (liste[cycle] == NULL)
+        {
+            liste[cycle] = forge_node(temp->number);
+            aux[cycle] = liste[cycle];
+        }
+        else
+        {
+            aux[cycle]->next = forge_node(temp->number);
+            aux[cycle] = aux[cycle]->next;
+        }
+        temp = temp->next;
+        cycle++;
+    }
+    return liste;
+}
+list **divide_in_n_lists_b(list *head, int n)
+{
+    list **aux = (list **)malloc(n * sizeof(list *));
+    list **liste = (list **)malloc(n * sizeof(list *));
+    for (int i = 0; i < n; i++)
+        liste[i] = NULL;
+    list *temp = head;
+    int nodes = count_nodes(head);
+    int count[n];
+    int remainder = nodes - (nodes / n) * n;
+    printf("%d %d", remainder, nodes / n);
+    for (int i = 0; i < n; i++)
+    {
+        count[i] = nodes / n;
+        if (remainder > 0)
+        {
+            count[i] += 1;
+            remainder -= 1;
+        }
+    }
+    int cycle = 0;
+    int curent_list = 0;
+    while (temp)
+    {
+        if (cycle == count[curent_list])
+        {
+            curent_list++;
+            cycle = 0;
+        }
+        if (liste[curent_list] == NULL)
+        {
+            liste[curent_list] = forge_node(temp->number);
+            aux[curent_list] = liste[curent_list];
+        }
+        else
+        {
+            aux[curent_list]->next = forge_node(temp->number);
+            aux[curent_list] = aux[curent_list]->next;
+        }
+        temp = temp->next;
+        cycle++;
+    }
 
+    return liste;
+}
 int main(int argc, char const *argv[])
 {
     srand(time(NULL));
-    int range = random_range(10, 30);
+    int range = random_range(20, 50);
     printf("%d\n", range);
     list *head = forge_node(random_range(-1000, 1000));
     list *t = head;
@@ -104,18 +191,31 @@ int main(int argc, char const *argv[])
         t = t->next;
     }
     pirnt_list(head);
+    printf("total : %d nodes", count_nodes(head));
     list *max = NULL;
     list *min = NULL;
     find_limits(head, &min, &max);
     printf("\nmax %d\nmin %d\n", max->number, min->number);
     list *sub_list = get_inner_list(head, min, max);
     pirnt_list(sub_list);
+    printf("total : %d nodes\n\n", count_nodes(sub_list));
     reverse_list(&sub_list);
     pirnt_list(sub_list);
-    list *liste[5];
-    liste[0] = forge_node(1);
-    liste[0]->next = forge_node(23);
-    liste[0]->next->next = forge_node(99);
-    pirnt_list(liste[0]);
+    int divide = 5;
+    list **liste = divide_in_n_lists_a(sub_list, divide);
+    for (int i = 0; i < divide; i++)
+    {
+        printf("lista %d: ", i);
+        pirnt_list(liste[i]);
+        printf("total : %d nodes\n", count_nodes(liste[i]));
+    }
+    pirnt_list(sub_list);
+    liste = divide_in_n_lists_b(sub_list, divide);
+    for (int i = 0; i < divide; i++)
+    {
+        printf("lista %d: ", i);
+        pirnt_list(liste[i]);
+        printf("total : %d nodes\n", count_nodes(liste[i]));
+    }
     return 0;
 }
