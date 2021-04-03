@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "./headers/header.h"
 
 int main()
@@ -90,7 +87,6 @@ int main()
         break;
         case 0:
         {
-            elibereaza_memoria_listei(&cap);
             exit(0);
         }
         break;

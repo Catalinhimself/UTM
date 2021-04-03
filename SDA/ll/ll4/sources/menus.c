@@ -3,19 +3,19 @@
 
 int afiseaza_meniu()
 {
-    printf("\n__Crearea listei în memoria dinamică__");
-    printf("\n1. Introducerea informației despre elementele listei de la tastatură");
+    printf("\n__Crearea listei in memoria dinamica__");
+    printf("\n1. Introducerea informatiei despre elementele listei de la tastatura");
     printf("\n2. Genereaza o lista cu elemente aleatorii\n");
-    printf("\n3.  Afișarea informației despre elementele listei la ecran.");
-    printf("\n4.  Căutarea elementuluiîn listă.");
-    printf("\n5.  Modificarea câmpurilor unui element din listă.");
-    printf("\n6.  Determinarea adresei ultimului element din listă.");
-    printf("\n7.  Determinarea lungimii listei (numărul de elemente).");
-    printf("\n8.  Interschimbareaa două elemente indicate în listă.");
-    printf("\n9.  Sortarea listei.");
-    printf("\n10. Eliberarea memoriei alocate pentru listă.");
+    printf("\n3. Afisarea informatiei despre elementele listei la ecran.");
+    printf("\n4. Cautarea elementuluiin lista.");
+    printf("\n5. Modificarea campurilor unui element din lista.");
+    printf("\n6. Determinarea adresei ultimului element din lista.");
+    printf("\n7. Determinarea lungimii listei (numarul de elemente).");
+    printf("\n8. Interschimbareaa doua elemente indicate in lista.");
+    printf("\n9. Sortarea listei.");
+    printf("\n10. Eliberarea memoriei alocate pentru lista.");
     printf("\n11. Calculeaza memoria ocupata.");
-    printf("\n0.  Ieșire din program");
+    printf("\n0. Iesire din program");
     printf("\nOptiunea - ");
     int m;
     scanf("%d", &m);

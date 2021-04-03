@@ -1,9 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <errno.h>
-
 #include "./../headers/header.h"
 #include "./../headers/const.h"
 
@@ -44,18 +38,15 @@ imobil *citeste_element(int ord)
     printf("proprietar: ");
     scanf("%c", &str[0]); // curata bufferul
     scanf("%[^\n]", str);
-    q->proprietar = (char *)malloc((strlen(str) + 1) * sizeof(char));
-    strcpy(q->proprietar, str);
+    q->proprietar = strdup(str);
     printf("tip: ");
     scanf("%c", &str[0]); // curata bufferul
     scanf("%[^\n]", str);
-    q->tip = (char *)malloc((strlen(str) + 1) * sizeof(char));
-    strcpy(q->tip, str);
+    q->tip = strdup(str);
     printf("adresa: ");
     scanf("%c", &str[0]); // curata bufferul
     scanf("%[^\n]", str);
-    q->adresa = (char *)malloc((strlen(str) + 1) * sizeof(char));
-    strcpy(q->adresa, str);
+    q->adresa = strdup(str);
     printf("suprafata : ");
     scanf(" %f", &q->suprafata);
     printf("costul : ");
@@ -115,17 +106,9 @@ imobil *creaza_lista_demo(int nr)
     }
 
     q->next = NULL;
-    char str[255];
-
-    strcpy(str, NAME[rand() % NAME_COUNT]);
-    q->proprietar = (char *)malloc((strlen(str) + 1) * sizeof(char));
-    strcpy(q->proprietar, str);
-    strcpy(str, TYPE[rand() % TYPE_COUNT]);
-    q->tip = (char *)malloc((strlen(str) + 1) * sizeof(char));
-    strcpy(q->tip, str);
-    strcpy(str, ADDRESS[rand() % ADDRESS_COUNT]);
-    q->adresa = (char *)malloc((strlen(str) + 1) * sizeof(char));
-    strcpy(q->adresa, str);
+    q->proprietar = strdup(NAME[rand() % NAME_COUNT]);
+    q->tip = strdup(TYPE[rand() % TYPE_COUNT]);
+    q->adresa = strdup(ADDRESS[rand() % ADDRESS_COUNT]);
     q->suprafata = ((float)(rand() % 300) + (float)11 / ((rand() % 9) + 1)) + 16;
     q->costul = q->suprafata * (rand() % 1500);
     cap = q;
@@ -143,18 +126,9 @@ imobil *creaza_lista_demo(int nr)
         q->next = NULL;
         char str[255];
 
-        strcpy(str, NAME[rand() % NAME_COUNT]);
-        q->proprietar = (char *)malloc((strlen(str) + 1) * sizeof(char));
-        strcpy(q->proprietar, str);
-
-        strcpy(str, TYPE[rand() % TYPE_COUNT]);
-        q->tip = (char *)malloc((strlen(str) + 1) * sizeof(char));
-        strcpy(q->tip, str);
-
-        strcpy(str, ADDRESS[rand() % ADDRESS_COUNT]);
-        q->adresa = (char *)malloc((strlen(str) + 1) * sizeof(char));
-        strcpy(q->adresa, str);
-
+        q->proprietar = strdup(NAME[rand() % NAME_COUNT]);
+        q->tip = strdup(TYPE[rand() % TYPE_COUNT]);
+        q->adresa = strdup(ADDRESS[rand() % ADDRESS_COUNT]);
         q->suprafata = ((float)(rand() % 100) + (rand() % 100) + (rand() % 100) + (float)11 / ((rand() % 9) + 1)) + 16;
         q->costul = q->suprafata * (rand() % 21) / ((rand() % 16) + 1) * 1000 + q->suprafata * (rand() % 500);
         t->next = q;
@@ -577,12 +551,11 @@ void elibereaza_memoria_listei(imobil **cap)
 {
     while (*cap)
     {
-        imobil *t = *cap;
-        *cap = (*cap)->next;
-        free(t->proprietar);
-        free(t->tip);
-        free(t->adresa);
-        t->next = NULL;
-        free(t);
+        imobil *next = (*cap)->next;
+        free((*cap)->proprietar);
+        free((*cap)->tip);
+        free((*cap)->adresa);
+        free((*cap));
+        *cap = next;
     }
 }

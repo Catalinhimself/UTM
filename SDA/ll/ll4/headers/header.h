@@ -1,6 +1,12 @@
 #ifndef SOBOLAN
 #define SOBOLAN
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <errno.h>
+
 typedef struct _imobil
 {
     // aranjate haotic ar ocupa mai multa memorie(
