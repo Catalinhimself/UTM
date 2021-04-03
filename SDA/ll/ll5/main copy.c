@@ -10,9 +10,6 @@ struct node
 
 typedef struct node list;
 
-#define RED(string) "\x1b[31m" string "\x1b[0m"
-#define GREEN(string) "\x1b[32m" string "\x1b[0m"
-
 list *forge_node(int number)
 {
     list *node = (list *)malloc(sizeof(list));
@@ -46,38 +43,12 @@ void pirnt_list(list *head)
 void find_limits(list *head, list **min, list **max)
 {
     list *temp = head;
-    int first = 0;
     (*min) = head;
     (*max) = head;
     while (temp)
     {
-        if (first == 0)
-        {
-            if (temp->number > (*max)->number)
-            {
-                (*max) = temp;
-                first = 1;
-            }
-            if (temp->number < (*min)->number)
-            {
-                (*min) = temp;
-                first = -1;
-            }
-        }
-        if (first == 1)
-        {
-            if (temp->number > (*max)->number)
-                (*max) = temp;
-            if (temp->number <= (*min)->number)
-                (*min) = temp;
-        }
-        if (first == -1)
-        {
-            if (temp->number >= (*max)->number)
-                (*max) = temp;
-            if (temp->number < (*min)->number)
-                (*min) = temp;
-        }
+        (*max) = temp->number > (*max)->number ? temp : (*max);
+        (*min) = temp->number < (*min)->number ? temp : (*min);
         temp = temp->next;
     }
 }
@@ -242,11 +213,10 @@ int main(int argc, char const *argv[])
     // citirea
     int node;
     int z = 1;
-    int abs = 500;
     if (option == 1)
         node = get_num(z);
     if (option == 2)
-        node = random_range(-abs, abs);
+        node = random_range(-1000, 1000);
     list *head = forge_node(node);
     list *t = head;
     for (int i = 1; i < range; i++)
@@ -255,44 +225,36 @@ int main(int argc, char const *argv[])
         if (option == 1)
             node = get_num(z);
         if (option == 2)
-            node = random_range(-abs, abs);
+            node = random_range(-1000, 1000);
         t->next = forge_node(node);
         t = t->next;
     }
-    //determinarea min si max
+    // afisarea
+    printf("Lista citita:\n");
+    pirnt_list(head);
+    printf("contine : %d elemente\n", count_nodes(head));
     list *max = NULL;
     list *min = NULL;
     find_limits(head, &min, &max);
-    // afisarea
-    printf("Lista citita:\n");
-    if (!head)
-    {
-        printf("lista este vida\n");
-        return 0;
-    }
-    list *temp = head;
-    while (temp)
-    {
-        if (temp == min || temp == max)
-            printf(GREEN("%d "), temp->number);
-        else if (temp->number == min->number || temp->number == max->number)
-            printf(RED("%d "), temp->number);
-        else
-            printf("%d ", temp->number);
-        temp = temp->next;
-    }
-    printf("\n");
-
-    printf("contine : %d elemente\n", count_nodes(head));
+    // identificarea intervalului
+    // printf("\nsubconsecutivitatea cuprinsa intre %d is %d este:", min->number, max->number);
     list *sub_list = get_inner_list(head, min, max);
+    // pirnt_list(sub_list);
+    // printf("contine : %d elemente\n\n", count_nodes(sub_list));
+    // inversarea intervalului
     reverse_list(&sub_list);
-    printf("MIN: %d\n", min->number);
-    printf("MAX: %d\n", max->number);
     printf("\nsubconsecutivitatea inversa cuprinsa intre %d si %d:\n ", min->number, max->number);
     pirnt_list(sub_list);
+    // 2 metode de divizare in 5 sau n liste
+    // printf("\naceasta lista poate fi divizata in 2 metode:\n");
+    // printf("1. cate un element va fi trecut in fiecare lista la rand\n");
+    // printf("2. un numar de elemente succesive va fi trecut in fiecare lista\n");
+    option = 2;
+    // scanf("%d", &option);
     node = count_nodes(sub_list);
-    printf("contine : %d elemente\n", node);
+    // printf("in cate liste doriti sa divizati? (aceata lista contine %d elemente)\n", node);
     int divide = 5;
+    // scanf("%d", &divide);
     if (divide > node)
     {
         printf("nu se poate de divizat aceasta lista in %d liste fiind ca, contine doar %d\n", divide, node);
@@ -301,7 +263,15 @@ int main(int argc, char const *argv[])
     else
         printf("\ncele %d liste obtinute: \n\n", divide);
     list **lists;
-    lists = divide_in_n_lists_b(sub_list, divide);
-    print_n_lists(lists, divide);
+    // if (option == 1)
+    // {
+    //     lists = divide_in_n_lists_a(sub_list, divide);
+    //     print_n_lists(lists, divide);
+    // }
+    if (option == 2)
+    {
+        lists = divide_in_n_lists_b(sub_list, divide);
+        print_n_lists(lists, divide);
+    }
     return 0;
 }
