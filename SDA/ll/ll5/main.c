@@ -38,7 +38,7 @@ int main(int argc, char const *argv[])
     // citirea
     int node;
     int z = 1;
-    int abs = 50;
+    int abs = 1000;
     if (option == 1)
         node = get_num(z);
     if (option == 2)
