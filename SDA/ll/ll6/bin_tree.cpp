@@ -60,7 +60,7 @@ void grow_tree(tree** root, int data)
 
 void inorder(tree *node)
 {
-    if (node == NULL)
+    if (!node)
         return;
     inorder(node->left);
     print_node(node);
@@ -110,4 +110,17 @@ void modify_node(tree* node)
     }
 }
 
-
+void append_to_queue(tree* node, int level, list** tail)
+{
+    list* element = (list*)malloc(sizeof(list));
+    element->node = node;
+    element->level = level;
+    element->next = NULL;
+    if(!(*tail))
+        (*tail) = element;
+    else
+    {
+        (*tail)->next = element;
+        (*tail) = element;
+    }
+}

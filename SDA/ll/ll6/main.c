@@ -22,7 +22,7 @@ int main()
     
     printf("elementul cautat\n");    
     print_node(search_node(root,6));    
-    modify_node(search_node(root,3));    
+    //modify_node(search_node(root,3));    
     inorder(root);
     return 0;
 }
