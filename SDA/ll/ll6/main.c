@@ -5,7 +5,7 @@ int main()
     printf("__main__\n");
 
     bin_test();
-   
+   put_realty(get_realty()); 
     tree*root=NULL; 
     list* tail = NULL;
     list* head = NULL;

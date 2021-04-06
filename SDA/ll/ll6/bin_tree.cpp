@@ -212,4 +212,38 @@ int read_node(int order)
     int data;
     scanf(" %d",&data);
    return data;
-} 
+}
+
+void get_string(char** var,const char *message)
+{
+    char str[250];
+    printf("%s:  ", message);
+    scanf(" %[^\n]", str); 
+    (*var) = strdup(str);
+}
+
+realty get_realty()
+{
+    printf("citirea imobilului\n");
+    realty immovable;
+    get_string(&immovable.owner,"proprietar");
+    get_string(&immovable.type,"tipul");
+    get_string(&immovable.address,"adresa");
+    
+    printf("suprafata : ");
+    scanf(" %f", &immovable.surface);
+    printf("costul : ");
+    scanf(" %f", &immovable.price);
+
+    return immovable;
+}
+
+void put_realty(realty immovable)
+{
+    printf("%s ",immovable.owner);
+    printf("%s ",immovable.type);
+    printf("%s ",immovable.address);
+    printf("%.1f",immovable.surface);
+    printf("%.1f\n",immovable.price);
+}
+

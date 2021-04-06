@@ -3,11 +3,12 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 void bin_test();
 typedef struct
 {
-    char owner[30],type[20],adress[30];
+    char *owner, *type, *address;
     float surface,price;
 }realty;
 typedef struct node
@@ -41,5 +42,7 @@ int count_list_nodes(list*head);
 void free_list(list** head);
 int isnt_tree_root(tree* root);
 int read_node(int order);
-
+void get_string(char** var,const char *message);
+realty get_realty();
+void put_realty(realty immovable);
 #endif
