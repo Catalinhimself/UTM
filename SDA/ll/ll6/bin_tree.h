@@ -29,6 +29,8 @@ void postorder(tree* root);
 tree* search_node(tree* node, int data);
 void modify_node(tree* node);
 void append_to_queue(tree* node, int level, list** tail);
-
+void levels(list* head, list** tail);
+int print_levels(tree* root);
+int menu();
 
 #endif

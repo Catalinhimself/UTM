@@ -102,7 +102,7 @@ void modify_node(tree* node)
     printf("old data: %d\n",node->data);
     printf("modify? [y/n]\n");
     char c;
-    scanf("%c",&c);
+    scanf(" %c",&c);
     if (c =='y')
     {
     printf("new data: ");
@@ -123,4 +123,53 @@ void append_to_queue(tree* node, int level, list** tail)
         (*tail)->next = element;
         (*tail) = element;
     }
+}
+
+void levels(list* node, list** tail)
+{   if (!node)
+        return;
+    if(node->node->left)
+        append_to_queue(node->node->left, node->level+1, tail);
+    if(node->node->right)
+        append_to_queue(node->node->right, node->level+1, tail);
+    levels(node->next, tail);    
+}
+
+int print_levels(tree* root)
+{
+   list* tail = NULL;
+   append_to_queue(root, 0, &tail);
+   list* head = tail;
+   levels(head, &tail);
+
+
+   int current_level = -1;
+    while (head)
+    {
+        if (head->level != current_level)
+        {
+            printf("current level: %d\n",head->level);
+            current_level = head->level;
+        }
+        print_node(head->node);
+        head = head->next;
+    }    
+   return current_level; 
+}
+
+int menu()
+{
+    printf("1. Introducera unui arbore de la tastatura\n");
+    printf("2. Afisarea nodurilor la ecran\n");
+    printf("3. Cautarea nodului in arbore\n");
+    printf("4. Modificarea unui nod din arbore\n");
+    printf("5. Determinarea numarului de noduri\n");
+    printf("6. Determinarea inaltimii arborelui\n");
+    printf("7. Eliberarea memoriei alocate pentru lista\n");
+    printf("0. Iesirea din program\n");
+    int option;
+    printf("Optiunea - ");
+    scanf("%d",&option);
+    
+    return option;
 }
