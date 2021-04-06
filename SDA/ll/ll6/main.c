@@ -8,7 +8,8 @@ int main()
    
     tree*root=NULL; 
     list* tail = NULL;
-  
+    list* head = NULL;
+
     int option = 666;
     while(option)
     {
@@ -17,16 +18,21 @@ int main()
     switch (option)
         {
         case 1:            
-            grow_tree(&root,5);
-            grow_tree(&root,3);
-            grow_tree(&root,6);
-            grow_tree(&root,4);
-            grow_tree(&root,2);
-            grow_tree(&root,1);
-            grow_tree(&root,9);
-            grow_tree(&root,8);
+        {
+            char c = 'y';
+            int order = 0;
+            while (c=='y')
+            {
+                grow_tree(&root,read_node(++order));
+                printf("continuati? [y/n] ");
+                scanf(" %c",&c);
+            }
+
             break;               
-        case 2:            
+        }
+        case 2:           
+           if (isnt_tree_root(root))
+              break; 
             printf("optiuni de afisare a nodurilor\n");
             printf("1. inordine\n");
             printf("2. preordine\n");
@@ -50,7 +56,7 @@ int main()
                 break;
             case 4:
                 append_to_queue(root, 0, &tail);
-                list* head = tail;
+                head = tail;
                 levels(head, &tail);
                 print_levels(root);
                 break;
@@ -58,9 +64,11 @@ int main()
             break;
         case 3:
         {
+           if (isnt_tree_root(root));
+               break;
             printf("elementul cautat\n");    
             int data;
-            scanf("%d",&data);
+            scanf(" %d",&data);
             tree*found = search_node(root,data);
             if (!found){
                 printf("nu exista asa nod\n");
@@ -70,7 +78,9 @@ int main()
             break;
         }
         case 4:
-        {    
+        {   
+           if (isnt_tree_root(root))
+                 break;
             printf("elementul cautat pentru modificare\n");    
             int data;
             scanf("%d",&data);
@@ -83,11 +93,15 @@ int main()
             break;
         }
         case 5:
+            printf("numarul de noduri: %d\n",count_list_nodes(head));
             break;
         case 6:
+           if (isnt_tree_root(root))
+               break;
             printf("inaltimii arborelui este: %d\n",print_levels(root));
             break;
         case 7:
+            free_list(&head);
             break;
         }
     }

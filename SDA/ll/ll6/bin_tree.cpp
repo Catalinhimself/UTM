@@ -169,7 +169,47 @@ int menu()
     printf("0. Iesirea din program\n");
     int option;
     printf("Optiunea - ");
-    scanf("%d",&option);
+    scanf(" %d",&option);
     
     return option;
 }
+
+int count_list_nodes(list*head)
+{
+    int count = 0;
+    while(head)
+    {
+        count++;
+        head=head->next;
+    }
+    return count;
+}
+
+void free_list(list**head)
+{
+    list* next;
+    while((*head))
+    {    
+        next=(*head)->next;
+        free((*head));
+        (*head)=next;
+    }
+}
+
+int isnt_tree_root(tree* root)
+{
+    if(!root)
+    {
+        printf("radacina arborelui este %p\n",root);
+        return 1;
+    }
+    return 0;
+}
+
+int read_node(int order)
+{
+    printf("introducerea nodului %d\n",order);
+    int data;
+    scanf(" %d",&data);
+   return data;
+} 

@@ -5,10 +5,15 @@
 #include <stdio.h>
 
 void bin_test();
-
+typedef struct
+{
+    char owner[30],type[20],adress[30];
+    float surface,price;
+}realty;
 typedef struct node
 {
     int data;
+    realty immovable;
     struct node *parent, *left, *right;
 }tree;
 
@@ -32,5 +37,9 @@ void append_to_queue(tree* node, int level, list** tail);
 void levels(list* head, list** tail);
 int print_levels(tree* root);
 int menu();
+int count_list_nodes(list*head);
+void free_list(list** head);
+int isnt_tree_root(tree* root);
+int read_node(int order);
 
 #endif
