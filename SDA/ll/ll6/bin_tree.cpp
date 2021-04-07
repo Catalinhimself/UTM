@@ -104,15 +104,30 @@ tree *search_node(tree *node, int key)
 
 void modify_node(tree *node)
 {
-    printf("old key: %d\n", node->key);
-    printf("modify? [y/n]\n");
     char c;
+    printf("modifica proprietarul? (%s) [y/n]\n",node->immovable.owner);
     scanf(" %c", &c);
     if (c == 'y')
-    {
-        printf("new key: ");
-        scanf("%d", &node->key);
-    }
+        get_string(&node->immovable.owner, "proprietar nou");
+    
+    printf("modifica tipul? (%s) [y/n]\n",node->immovable.type);
+    scanf(" %c", &c);
+    if (c == 'y')
+        get_string(&node->immovable.type, "tipul");
+    printf("modifica adresa? (%s) [y/n]\n",node->immovable.address);
+    scanf(" %c", &c);
+    if (c == 'y')
+        get_string(&node->immovable.address, "adresa");
+    printf("modifica suprafata? (%d) [y/n]\n",node->immovable.surface);
+    scanf(" %c", &c);
+    if (c == 'y'){
+        printf("suprafata : ");
+        scanf(" %d", &node->immovable.price);}
+    printf("modifica pretul? (%d) [y/n]\n",node->immovable.price);
+    scanf(" %c", &c);
+    if (c == 'y'){
+    printf("costul : ");
+    scanf(" %d", &node->immovable.price);}
 }
 
 void append_to_queue(tree *node, int level, list **tail)
@@ -170,7 +185,7 @@ int menu()
     printf("4. Modificarea unui nod din arbore\n");
     printf("5. Determinarea numarului de noduri\n");
     printf("6. Determinarea inaltimii arborelui\n");
-    printf("7. Eliberarea memoriei alocate pentru lista\n");
+    printf("7. Eliberarea memoriei alocate\n");
     printf("0. Iesirea din program\n");
     int option;
     printf("Optiunea - ");
@@ -260,4 +275,15 @@ realty generate_realty(int order)
     printf("suprafata: %d m^2\n", immovable.surface);
     printf("costul: %d $\n", immovable.price);
     return immovable;
+}
+
+
+tree* postorder_free(tree *node)
+{
+    if (!node)
+        return NULL;
+    postorder_free(node->left);
+    postorder_free(node->right);
+    free(node);
+    return NULL;
 }

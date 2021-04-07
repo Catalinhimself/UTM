@@ -13,6 +13,7 @@ int main()
 
     int order = 0;
     int option = 666;
+    char c = 'a';
     while(option)
     {
     option = menu();
@@ -21,7 +22,6 @@ int main()
         {
         case 1:            
         {
-            char c = 'c';
             while (c=='c'||c=='a')
             {   
                 realty temp;
@@ -69,25 +69,10 @@ int main()
             }
             break;}
         case 3:
-        {
-           if (isnt_tree_root(root));
-               break;
-            printf("elementul cautat\n");    
-            int key;
-            scanf(" %d",&key);
-            tree*found = search_node(root,key);
-            if (!found){
-                printf("nu exista asa nod\n");
-                break;
-            }
-            print_node(found);    
-            break;
-        }
-        case 4:
         {   
            if (isnt_tree_root(root))
                  break;
-            printf("elementul cautat pentru modificare\n");    
+            printf("elementul cautat pentru modificare (dupa pret)\n");    
             int key;
             scanf("%d",&key);
             tree*found = search_node(root,key);
@@ -95,10 +80,38 @@ int main()
                 printf("nu exista asa nod\n");
                 break;
             }
+            while(found->immovable.price == key){
+            put_realty(found->immovable);
+            if (found->left==NULL)
+                break;
+            found=found->left;
+            }
+            break;
+        }
+        case 4:
+        {   
+           if (isnt_tree_root(root))
+                 break;
+            printf("elementul cautat pentru modificare (dupa pret)\n");    
+            int key;
+            scanf("%d",&key);
+            tree*found = search_node(root,key);
+            if (!found){
+                printf("nu exista asa nod\n");
+                break;
+            }
+            while(found->immovable.price == key){
             modify_node(found);    
+            if (found->left==NULL)
+                break;
+            found=found->left;
+            }
             break;
         }
         case 5:
+            append_to_queue(root, 0, &tail);
+            head = tail;
+            levels(head, &tail);
             printf("numarul de noduri: %d\n",count_list_nodes(head));
             break;
         case 6:
@@ -108,6 +121,7 @@ int main()
             break;
         case 7:
             free_list(&head);
+            root = postorder_free(root);
             break;
         }
     }
