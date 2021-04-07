@@ -22,7 +22,7 @@ void print_node(tree* node)
     //printf("\n");
     //printf("parent: %p\n",node->parent);
     //printf("adress: %p\n",node);
-//    printf("data: %d\n",node->data);
+    printf("data: %d\n",node->data);
     put_realty(node->immovable);
     //printf("left: %p\n",node->left);
     //printf("right: %p\n",node->right);
@@ -207,14 +207,6 @@ int isnt_tree_root(tree* root)
     return 0;
 }
 
-int read_node(int order)
-{
-    printf("introducerea nodului %d\n",order);
-    int data;
-    scanf(" %d",&data);
-   return data;
-}
-
 void get_string(char** var,const char *message)
 {
     char str[250];
@@ -223,9 +215,9 @@ void get_string(char** var,const char *message)
     (*var) = strdup(str);
 }
 
-realty get_realty(int order)
+realty get_realty()
 {
-    printf("citirea imobilului %d\n",order);
+    printf("citirea imobilului\n");
     realty immovable;
     get_string(&immovable.owner,"proprietar");
     get_string(&immovable.type,"tipul");
@@ -244,7 +236,7 @@ void put_realty(realty immovable)
     printf("%s ",immovable.owner);
     printf("%s ",immovable.type);
     printf("%s ",immovable.address);
-    printf("%.1f m^2 ",immovable.surface);
-    printf("%.1f $\n",immovable.price);
+    printf("%.1f ",immovable.surface);
+    printf("%.1f\n",immovable.price);
 }
 

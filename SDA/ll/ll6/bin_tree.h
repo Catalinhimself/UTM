@@ -15,7 +15,7 @@ typedef struct node
 {
     int data;
     realty immovable;
-    struct node *parent, *left, *right;
+    struct node *left, *right;
 }tree;
 
 typedef struct list
@@ -26,9 +26,9 @@ typedef struct list
 }list;
 
 
-tree* forge_node(tree* parent, int data);
+tree* forge_node(int data, realty immovable);
 void print_node(tree* node);
-void grow_tree(tree** root,int data);
+void grow_tree(tree** root,int data, realty immovable);
 void inorder(tree* root);
 void preorder(tree* root);
 void postorder(tree* root);
@@ -41,8 +41,7 @@ int menu();
 int count_list_nodes(list*head);
 void free_list(list** head);
 int isnt_tree_root(tree* root);
-int read_node(int order);
 void get_string(char** var,const char *message);
-realty get_realty();
+realty get_realty(int order);
 void put_realty(realty immovable);
 #endif

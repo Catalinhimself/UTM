@@ -5,7 +5,7 @@ int main()
     printf("__main__\n");
 
     bin_test();
-   put_realty(get_realty()); 
+//   put_realty(get_realty()); 
     tree*root=NULL; 
     list* tail = NULL;
     list* head = NULL;
@@ -23,7 +23,8 @@ int main()
             int order = 0;
             while (c=='y')
             {
-                grow_tree(&root,read_node(++order));
+                realty temp = get_realty(++order);
+                grow_tree(&root,(int) temp.price, temp);
                 printf("continuati? [y/n] ");
                 scanf(" %c",&c);
             }
