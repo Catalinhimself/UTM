@@ -2,6 +2,7 @@
 
 int main()
 {
+    srand(time(NULL));
     printf("__main__\n");
 
     bin_test();
@@ -20,18 +21,22 @@ int main()
         {
         case 1:            
         {
-            char c = 'y';
-            while (c=='y')
-            {
-                realty temp = get_realty(++order);
+            char c = 'c';
+            while (c=='c'||c=='a')
+            {   
+                realty temp;
+                if (c=='c')
+                    temp = get_realty(++order);
+                if (c =='a')
+                    temp = generate_realty(++order);
                 grow_tree(&root,(int) temp.price, temp);
-                printf("continuati? [y/n] ");
+                printf("continuati/ autocompletare/ stop [c/a/s] ");
                 scanf(" %c",&c);
             }
 
             break;               
         }
-        case 2:           
+        case 2:{           
            if (isnt_tree_root(root))
               break; 
             printf("optiuni de afisare a nodurilor\n");
@@ -62,7 +67,7 @@ int main()
                 print_levels(root);
                 break;
             }
-            break;
+            break;}
         case 3:
         {
            if (isnt_tree_root(root));

@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+
 void bin_test();
 typedef struct
 {
@@ -44,4 +45,6 @@ int isnt_tree_root(tree* root);
 void get_string(char** var,const char *message);
 realty get_realty(int order);
 void put_realty(realty immovable);
+realty generate_realty(int order);
+
 #endif
