@@ -10,6 +10,7 @@ int main()
     list* tail = NULL;
     list* head = NULL;
 
+    int order = 0;
     int option = 666;
     while(option)
     {
@@ -20,7 +21,6 @@ int main()
         case 1:            
         {
             char c = 'y';
-            int order = 0;
             while (c=='y')
             {
                 realty temp = get_realty(++order);
@@ -68,9 +68,9 @@ int main()
            if (isnt_tree_root(root));
                break;
             printf("elementul cautat\n");    
-            int data;
-            scanf(" %d",&data);
-            tree*found = search_node(root,data);
+            int key;
+            scanf(" %d",&key);
+            tree*found = search_node(root,key);
             if (!found){
                 printf("nu exista asa nod\n");
                 break;
@@ -83,9 +83,9 @@ int main()
            if (isnt_tree_root(root))
                  break;
             printf("elementul cautat pentru modificare\n");    
-            int data;
-            scanf("%d",&data);
-            tree*found = search_node(root,data);
+            int key;
+            scanf("%d",&key);
+            tree*found = search_node(root,key);
             if (!found){
                 printf("nu exista asa nod\n");
                 break;

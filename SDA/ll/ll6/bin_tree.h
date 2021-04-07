@@ -4,16 +4,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
+#include <time.h>
 void bin_test();
 typedef struct
 {
     char *owner, *type, *address;
-    float surface,price;
+    int surface,price;
 }realty;
 typedef struct node
 {
-    int data;
+    int key;
     realty immovable;
     struct node *left, *right;
 }tree;
@@ -26,13 +26,13 @@ typedef struct list
 }list;
 
 
-tree* forge_node(int data, realty immovable);
+tree* forge_node(int key, realty immovable);
 void print_node(tree* node);
-void grow_tree(tree** root,int data, realty immovable);
+void grow_tree(tree** root,int key, realty immovable);
 void inorder(tree* root);
 void preorder(tree* root);
 void postorder(tree* root);
-tree* search_node(tree* node, int data);
+tree* search_node(tree* node, int key);
 void modify_node(tree* node);
 void append_to_queue(tree* node, int level, list** tail);
 void levels(list* head, list** tail);

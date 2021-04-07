@@ -1,14 +1,15 @@
 #include "bin_tree.h"
+#include "const.h"
 
 void bin_test()
 {
     printf("__bin_tree__\n");
 }
 
-tree* forge_node( int data, realty immovable)
+tree* forge_node( int key, realty immovable)
 {
     tree*node = (tree*)malloc(sizeof(tree));
-    node->data = data;
+    node->key = key;
     node->immovable = immovable;
 
     node->left = NULL;
@@ -22,35 +23,35 @@ void print_node(tree* node)
     //printf("\n");
     //printf("parent: %p\n",node->parent);
     //printf("adress: %p\n",node);
-//    printf("data: %d\n",node->data);
+//    printf("key: %d\n",node->key);
     put_realty(node->immovable);
     //printf("left: %p\n",node->left);
     //printf("right: %p\n",node->right);
 }
 
-void grow_tree(tree** root, int data, realty immovable)
+void grow_tree(tree** root, int key, realty immovable)
 {   
     if ((*root)==NULL)
     {
-    (*root) = forge_node(data, immovable);
+    (*root) = forge_node(key, immovable);
     return;
     }    
 
     tree* temp = (*root);
     while (1)
     {
-        if (data <= temp->data)
+        if (key <= temp->key)
         {
             if(temp->left==NULL)
-                {temp->left = forge_node(data, immovable);
+                {temp->left = forge_node(key, immovable);
                 break;}
             else
                 temp = temp->left;    
         }
-        if (data > temp->data)
+        if (key > temp->key)
         {
             if (temp->right == NULL)
-                {temp->right = forge_node(data,immovable);
+                {temp->right = forge_node(key,immovable);
                 break;}
             else
                 temp = temp->right;
@@ -86,28 +87,28 @@ void postorder(tree* node)
     print_node(node);
 }
 
-tree* search_node(tree* node, int data)
+tree* search_node(tree* node, int key)
 {
     if (!node)
         return NULL;
-    if (node->data == data)
+    if (node->key == key)
         return node;        
-    if (node->data >= data)
-        return search_node(node->left, data);
+    if (node->key >= key)
+        return search_node(node->left, key);
     else
-        return search_node(node->right, data);
+        return search_node(node->right, key);
 }
 
 void modify_node(tree* node)
 {
-    printf("old data: %d\n",node->data);
+    printf("old key: %d\n",node->key);
     printf("modify? [y/n]\n");
     char c;
     scanf(" %c",&c);
     if (c =='y')
     {
-    printf("new data: ");
-    scanf("%d",&node->data);
+    printf("new key: ");
+    scanf("%d",&node->key);
     }
 }
 
@@ -210,9 +211,9 @@ int isnt_tree_root(tree* root)
 int read_node(int order)
 {
     printf("introducerea nodului %d\n",order);
-    int data;
-    scanf(" %d",&data);
-   return data;
+    int key;
+    scanf(" %d",&key);
+   return key;
 }
 
 void get_string(char** var,const char *message)
@@ -232,9 +233,9 @@ realty get_realty(int order)
     get_string(&immovable.address,"adresa");
     
     printf("suprafata : ");
-    scanf(" %f", &immovable.surface);
+    scanf(" %d", &immovable.surface);
     printf("costul : ");
-    scanf(" %f", &immovable.price);
+    scanf(" %d", &immovable.price);
 
     return immovable;
 }
@@ -244,7 +245,26 @@ void put_realty(realty immovable)
     printf("%s ",immovable.owner);
     printf("%s ",immovable.type);
     printf("%s ",immovable.address);
-    printf("%.1f m^2 ",immovable.surface);
-    printf("%.1f $\n",immovable.price);
+    printf("%d m^2 ",immovable.surface);
+    printf("%d $\n",immovable.price);
 }
 
+realty generate_realty(int order)
+{
+    srand(time(NULL));
+    printf("imobilului %d, este generat:\n",order);
+    realty immovable;
+
+
+    immovable.owner = strdup(NAME[rand() % NAME_COUNT]);
+    immovable.type= strdup(TYPE[rand() % TYPE_COUNT]);
+    immovable.address = strdup(ADDRESS[rand() % ADDRESS_COUNT]);
+    immovable.surface = (rand() % 100) + 16;
+    immovable.price = immovable.surface * ((rand() % 1000)+100);
+    printf("proprietarul: %s\n",immovable.owner);
+    printf("tipul: %s\n",immovable.type);
+    printf("adresa: %s\n",immovable.address);
+    printf("suprafata: %d m^2\n",immovable.surface);
+    printf("costul: %d $\n",immovable.price);
+    return immovable;
+}
