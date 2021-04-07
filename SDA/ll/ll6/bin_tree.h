@@ -1,5 +1,5 @@
-#ifndef FRIED_EGG_JELLYFISH
-#define FRIED_EGG_JELLYFISH
+#ifndef MIRELA
+#define MIRELA
 
 #include <stdlib.h>
 #include <stdio.h>
