@@ -6,10 +6,9 @@ void bin_test()
     printf("__bin_tree__\n");
 }
 
-tree *forge_node(int key, realty immovable)
+tree *forge_node(realty immovable)
 {
     tree *node = (tree *)malloc(sizeof(tree));
-    node->key = key;
     node->immovable = immovable;
 
     node->left = NULL;
@@ -23,38 +22,37 @@ void print_node(tree *node)
     //printf("\n");
     //printf("parent: %p\n",node->parent);
     //printf("adress: %p\n",node);
-    //    printf("key: %d\n",node->key);
     put_realty(node->immovable);
     //printf("left: %p\n",node->left);
     //printf("right: %p\n",node->right);
 }
 
-void grow_tree(tree **root, int key, realty immovable)
+void grow_tree(tree **root, realty immovable)
 {
     if ((*root) == NULL)
     {
-        (*root) = forge_node(key, immovable);
+        (*root) = forge_node(immovable);
         return;
     }
 
     tree *temp = (*root);
     while (1)
     {
-        if (key <= temp->key)
+        if (immovable.price <= temp->immovable.price)
         {
             if (temp->left == NULL)
             {
-                temp->left = forge_node(key, immovable);
+                temp->left = forge_node( immovable);
                 break;
             }
             else
                 temp = temp->left;
         }
-        if (key > temp->key)
+        if (immovable.price > temp->immovable.price)
         {
             if (temp->right == NULL)
             {
-                temp->right = forge_node(key, immovable);
+                temp->right = forge_node(immovable);
                 break;
             }
             else
@@ -94,9 +92,9 @@ tree *search_node(tree *node, int key)
 {
     if (!node)
         return NULL;
-    if (node->key == key)
+    if (node->immovable.price == key)
         return node;
-    if (node->key >= key)
+    if (node->immovable.price >= key)
         return search_node(node->left, key);
     else
         return search_node(node->right, key);
@@ -123,7 +121,7 @@ void modify_node(tree *node)
     if (c == 'y'){
         printf("suprafata : ");
         scanf(" %d", &node->immovable.price);}
-    printf("modifica pretul? (%d) [y/n]\n",node->immovable.price);
+    printf("modifica pretul? ( nu este recomandat!!! ) (%d) [y/n]\n",node->immovable.price);
     scanf(" %c", &c);
     if (c == 'y'){
     printf("costul : ");
@@ -168,18 +166,19 @@ int print_levels(tree *root)
     {
         if (head->level != current_level)
         {
-            printf("\nnivelul curent: %d\n\n", head->level);
+            printf("\nnivelul curent: %d\n", head->level);
             current_level = head->level;
         }
         print_node(head->node);
         head = head->next;
     }
+    printf("\n");
     return current_level;
 }
 
 int menu()
 {
-    printf("1. Introducera unui arbore de la tastatura\n");
+    printf("\n1. Introducera unui arbore de la tastatura\n");
     printf("2. Afisarea nodurilor la ecran\n");
     printf("3. Cautarea nodului in arbore\n");
     printf("4. Modificarea unui nod din arbore\n");
@@ -212,6 +211,7 @@ void free_list(list **head)
     {
         next = (*head)->next;
         free((*head));
+        (*head)=NULL;
         (*head) = next;
     }
 }
@@ -253,7 +253,7 @@ realty get_realty(int order)
 void put_realty(realty immovable)
 {
     printf("%-15s ", immovable.owner);
-    printf("%-10s ", immovable.type);
+    printf("%-20s ", immovable.type);
     printf("%-20s ", immovable.address);
     printf("%9d m^2 ", immovable.surface);
     printf("%9d $\n", immovable.price);
@@ -278,12 +278,15 @@ realty generate_realty(int order)
 }
 
 
-tree* postorder_free(tree *node)
+void postorder_free(tree** node)
 {
-    if (!node)
-        return NULL;
-    postorder_free(node->left);
-    postorder_free(node->right);
-    free(node);
-    return NULL;
+    if (!(*node))
+        return;
+    postorder_free(&(*node)->left);
+    postorder_free(&(*node)->right);
+    free((*node)->immovable.owner);
+    free((*node)->immovable.type);
+    free((*node)->immovable.address);
+    free((*node));
+    (*node)=NULL;
 }

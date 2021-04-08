@@ -13,7 +13,6 @@ int main()
 
     int order = 0;
     int option = 666;
-    char c = 'a';
     while(option)
     {
     option = menu();
@@ -22,6 +21,7 @@ int main()
         {
         case 1:            
         {
+            char c = 'c';
             while (c=='c'||c=='a')
             {   
                 realty temp;
@@ -29,8 +29,8 @@ int main()
                     temp = get_realty(++order);
                 if (c =='a')
                     temp = generate_realty(++order);
-                grow_tree(&root,(int) temp.price, temp);
-                printf("continuati/ autocompletare/ stop [c/a/s] ");
+                grow_tree(&root, temp);
+                printf("\ncontinuati/ autocompletare/ stop [c/a/s] ");
                 scanf(" %c",&c);
             }
 
@@ -65,6 +65,7 @@ int main()
                 head = tail;
                 levels(head, &tail);
                 print_levels(root);
+                printf("numarul de noduri: %d\n",count_list_nodes(head));
                 break;
             }
             break;}
@@ -72,7 +73,7 @@ int main()
         {   
            if (isnt_tree_root(root))
                  break;
-            printf("elementul cautat pentru modificare (dupa pret)\n");    
+            printf("elementul cautat (dupa pret)\n");    
             int key;
             scanf("%d",&key);
             tree*found = search_node(root,key);
@@ -121,7 +122,7 @@ int main()
             break;
         case 7:
             free_list(&head);
-            root = postorder_free(root);
+            postorder_free(&root);
             break;
         }
     }
