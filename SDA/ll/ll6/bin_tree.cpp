@@ -94,6 +94,13 @@ tree *search_node(tree *node, int key)
         return NULL;
     if (node->immovable.price == key)
         return node;
+    if (node->left)
+        if(node->left->immovable.price == key)
+            return node;
+    if (node->right)
+        if (node->right->immovable.price == key)
+            return node;
+
     if (node->immovable.price >= key)
         return search_node(node->left, key);
     else
@@ -120,8 +127,8 @@ void modify_node(tree *node)
     scanf(" %c", &c);
     if (c == 'y'){
         printf("suprafata : ");
-        scanf(" %d", &node->immovable.price);}
-    printf("modifica pretul? ( nu este recomandat!!! ) (%d) [y/n]\n",node->immovable.price);
+        scanf(" %d", &node->immovable.surface);}
+    printf("modifica pretul? (%d) [y/n]\n",node->immovable.price);
     scanf(" %c", &c);
     if (c == 'y'){
     printf("costul : ");
@@ -132,8 +139,7 @@ void append_to_queue(tree *node, int level, list **tail)
 {
     list *element = (list *)malloc(sizeof(list));
     element->node = node;
-    element->level = level;
-    element->next = NULL;
+    element->level = level; element->next = NULL;
     if (!(*tail))
         (*tail) = element;
     else
@@ -167,6 +173,7 @@ int print_levels(tree *root)
         if (head->level != current_level)
         {
             printf("\nnivelul curent: %d\n", head->level);
+            printf("numarul maxim de noduri posibile: %d\n",(int) pow(2,head->level));
             current_level = head->level;
         }
         print_node(head->node);
@@ -177,15 +184,14 @@ int print_levels(tree *root)
 }
 
 int menu()
-{
-    printf("\n1. Introducera unui arbore de la tastatura\n");
-    printf("2. Afisarea nodurilor la ecran\n");
-    printf("3. Cautarea nodului in arbore\n");
-    printf("4. Modificarea unui nod din arbore\n");
-    printf("5. Determinarea numarului de noduri\n");
-    printf("6. Determinarea inaltimii arborelui\n");
-    printf("7. Eliberarea memoriei alocate\n");
-    printf("0. Iesirea din program\n");
+{   printf("\n");
+    printf("%-20s %-15s\n","1. adauga nod","3. cautarea");
+    printf("%-20s %-15s\n","11. genereaza nod","4. modificarea");
+    printf("%-20s %-15s\n","Afisarea:","5. numarul de elemente");
+    printf("%-20s %-15s\n","21. inordine","6. inaltimea arborelui");
+    printf("%-20s %-15s\n","22. preordine","7. eliberarea");
+    printf("%-20s %-15s\n","23. postordine","0. iesirea");
+    printf("%-20s\n","2. pe nivele");
     int option;
     printf("Optiunea - ");
     scanf(" %d", &option);
@@ -254,7 +260,7 @@ void put_realty(realty immovable)
 {
     printf("%-15s ", immovable.owner);
     printf("%-20s ", immovable.type);
-    printf("%-20s ", immovable.address);
+    printf("%-30s ", immovable.address);
     printf("%9d m^2 ", immovable.surface);
     printf("%9d $\n", immovable.price);
 }
@@ -287,6 +293,25 @@ void postorder_free(tree** node)
     free((*node)->immovable.owner);
     free((*node)->immovable.type);
     free((*node)->immovable.address);
+    free((*node));
+    (*node)=NULL;
+}
+
+void preorder_grow(tree** root, tree *node)
+{
+    if (!node)
+        return;
+    grow_tree(root,node->immovable);
+    preorder_grow(root,node->left);
+    preorder_grow(root,node->right);
+}
+
+void postorder_free_lite(tree** node)
+{
+    if (!(*node))
+        return;
+    postorder_free_lite(&(*node)->left);
+    postorder_free_lite(&(*node)->right);
     free((*node));
     (*node)=NULL;
 }

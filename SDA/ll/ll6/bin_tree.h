@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <math.h>
 
 void bin_test();
 typedef struct
@@ -46,4 +47,6 @@ realty get_realty(int order);
 void put_realty(realty immovable);
 realty generate_realty(int order);
 void postorder_free(tree** node);
+void preorder_grow(tree** root, tree* node);
+void postorder_free_lite(tree** node);
 #endif
