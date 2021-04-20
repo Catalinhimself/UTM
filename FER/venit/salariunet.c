@@ -89,6 +89,7 @@ int main()
     printf("FMA - fondul de asigurare medicala\n");
     printf("SP - scutirea personala\n");
     printf("SiP - scutirea pentru persoana intretinuta\n");
+    printf("VN - venit net\n");
     bool SP_used = false, SiP_used = true;
     float VB, VI, SN;
     printf("\npersoana beneficiaza de scutirea pentru persoana intretinuta? [ d / n ]   ");
