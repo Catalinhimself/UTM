@@ -18,11 +18,10 @@ unsigned factorial(unsigned n)
 
 int fibonacci(int n)
 {
-    int f1 = 0, f2 = 1, i;
-    int next;
+    int f1 = 0, f2 = 1, next;
     if (n < 1)
         return -1;
-    for (i = 1; i <= n; i++)
+    for (int i = 1; i <= n; i++)
     {
         next = f1 + f2;
         f1 = f2;
@@ -159,27 +158,22 @@ int main()
             o = 4;
         }
         clock_t begin, end;
-        double time_spent;
         switch (o)
         {
         case 1:
             begin = clock();
             moduri = brute_force(N, &moduri);
             end = clock();
-            time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-
             break;
         case 2:
             begin = clock();
             moduri = divide_conquer_add_repeat(N);
             end = clock();
-            time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
             break;
         case 3:
             begin = clock();
             moduri = fibonacci(N);
             end = clock();
-            time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
             break;
         case 4:
             printf("numarul nou de trepte - ");
@@ -189,7 +183,7 @@ int main()
             break;
         }
         printf("scara poate fi urcata in %d moduri\n", moduri);
-        printf("timpul de executie: %f sec.\n\n", time_spent);
+        printf("timpul de executie: %f sec.\n\n", (float)(end - begin) / CLOCKS_PER_SEC);
     }
 
     return EXIT_SUCCESS;
