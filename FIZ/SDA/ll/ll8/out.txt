@@ -1,0 +1,72 @@
+======================
+60 sec = 1 min
+0.001 sec = 1 milisec
+======================
+################################
+Tabloul demonstrativ de 6 elemente
+tablou initial:
+8513 -8405 -691 3949 6351 9437
+################################
+SHELL SORT:
+9437 8513 6351 3949 -691 -8405
+timpului de rulare: nesemnificativ
+comparatii: 13
+schimbari: 5
+################################
+QSORT (stdlib):
+9437 8513 6351 3949 -691 -8405
+timpului de rulare: nesemnificativ
+comparatii: 9
+########## N = 10000 | 10^4 ##########
+SHELL SORT:
+timpului de rulare: 0.001923 secunde
+comparatii: 271022
+schimbari: 151017
+QSORT (stdlib)
+timpului de rulare: 0.000997 secunde
+comparatii: 120407
+
+########## N = 100000 | 10^5 ##########
+SHELL SORT:
+timpului de rulare: 0.026895 secunde
+comparatii: 4257957
+schimbari: 2757951
+QSORT (stdlib)
+timpului de rulare: 0.011903 secunde
+comparatii: 1536323
+
+########## N = 1000000 | 10^6 ##########
+SHELL SORT:
+timpului de rulare: 0.406007 secunde
+comparatii: 70645885
+schimbari: 52645878
+QSORT (stdlib)
+timpului de rulare: 0.131649 secunde
+comparatii: 18674494
+
+########## N = 10000000 | 10^7 ##########
+SHELL SORT:
+timpului de rulare: 5.441267 secunde
+comparatii: 967482034
+schimbari: 747482026
+QSORT (stdlib)
+timpului de rulare: 1.391839 secunde
+comparatii: 220097512
+
+########## N = 100000000 | 10^8 ##########
+SHELL SORT:
+timpului de rulare: 75.640205 secunde
+comparatii: 13479076439
+schimbari: 10979076427
+QSORT (stdlib)
+timpului de rulare: 15.553826 secunde
+comparatii: 2532910485
+
+########## N = 1000000000 | 10^9 ##########
+SHELL SORT:
+timpului de rulare: 960.657452 secunde
+comparatii: 170880727195
+schimbari: 142880727182
+QSORT (stdlib)
+timpului de rulare: 153.375264 secunde
+comparatii: 28642535174
